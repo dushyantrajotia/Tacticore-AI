@@ -178,7 +178,7 @@ function renderSubmissionElement(el, idx) {
 function SubmissionMap({ markers = [], paths = [], scenarioId }) {
   const [step, setStep] = useState(-1);
   const W = 800, H = 550;
-  const template = SCENARIO_TEMPLATES[scenarioId] || SCENARIO_TEMPLATES['village_fire'];
+  const template = SCENARIO_TEMPLATES[scenarioId] || SCENARIO_TEMPLATES['mohi_firing_range'];
 
   const allActions = [
     ...markers.map(m => ({ ...m, _type: 'marker' })),

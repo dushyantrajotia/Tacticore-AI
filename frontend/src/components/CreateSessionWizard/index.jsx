@@ -27,26 +27,28 @@ const OLQ_LIST = [
   { key: 'Cour', label: 'Courage' },
 ];
 
+const DEFAULT_TEMPLATE = SCENARIO_TEMPLATES['mohi_firing_range'];
+
 const DEFAULT_FORM = {
   // A
-  scenarioId: 'village_fire',
+  scenarioId: 'mohi_firing_range',
   title: '',
-  problemDescription: '',
-  difficulty: 'medium',
+  problemDescription: DEFAULT_TEMPLATE.description,
+  difficulty: DEFAULT_TEMPLATE.difficulty,
   // B
-  volunteers: 4,
-  fireTrucks: 1,
-  waterPumps: 1,
+  volunteers: DEFAULT_TEMPLATE.defaultResources?.volunteers || 6,
+  fireTrucks: 0,
+  waterPumps: 0,
   ambulance: 0,
   police: 0,
   citizen: 0,
   car: 0,
   bike: 0,
-  customItems: [],
+  customItems: DEFAULT_TEMPLATE.defaultResources?.customItems || [],
   terrain: '',
   weather: '',
   // C
-  problems: [{ description: '', priority: 'critical', isPrimary: true }],
+  problems: DEFAULT_TEMPLATE.problems.map((p, i) => ({ ...p, isPrimary: i === 0 })),
   // D
   timeLimit: 30,
   briefing: 5,
