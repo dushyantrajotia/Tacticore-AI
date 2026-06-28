@@ -219,6 +219,71 @@ function MapGround3D({ bgImage, terrain, showImage = false }) {
   return <MapGroundSolid terrain={terrain} />;
 }
 
+function CustomMarker3D({ label, color }) {
+  if (!label) return <mesh position={[0, 5, 0]}><boxGeometry args={[8, 8, 8]} /><meshStandardMaterial color={color || '#f59e0b'} /></mesh>;
+  const n = label.toLowerCase();
+  
+  if (n.includes('chopper') || n.includes('heli')) {
+    return (
+      <group position={[0, 8, 0]}>
+        <mesh><capsuleGeometry args={[3, 10, 4, 8]} rotation={[0, 0, Math.PI/2]} /><meshStandardMaterial color={color || "#374151"} /></mesh>
+        <mesh position={[0, 4, 0]}><cylinderGeometry args={[8, 8, 0.5]} /><meshStandardMaterial color="#9ca3af" opacity={0.5} transparent={true} /></mesh>
+      </group>
+    );
+  }
+  if (n.includes('boat') || n.includes('ship') || n.includes('ferry')) {
+    return (
+      <group position={[0, 4, 0]}>
+         <mesh><boxGeometry args={[16, 6, 8]} /><meshStandardMaterial color={color || "#ef4444"} /></mesh>
+         <mesh position={[-2, 6, 0]}><boxGeometry args={[8, 5, 6]} /><meshStandardMaterial color="#ffffff" /></mesh>
+      </group>
+    );
+  }
+  if (n.includes('train')) {
+    return (
+      <group position={[0, 6, 0]}>
+        <mesh><boxGeometry args={[24, 8, 8]} /><meshStandardMaterial color={color || "#b91c1c"} /></mesh>
+        <mesh position={[-8, 6, 0]}><boxGeometry args={[8, 6, 8]} /><meshStandardMaterial color="#1f2937" /></mesh>
+        <mesh position={[8, 4, 0]}><cylinderGeometry args={[3, 3, 10]} rotation={[0, 0, Math.PI/2]} /><meshStandardMaterial color="#374151" /></mesh>
+      </group>
+    );
+  }
+  if (n.includes('car') || n.includes('jeep')) {
+    return (
+      <group position={[0, 5, 0]}>
+        <mesh><boxGeometry args={[14, 6, 8]} /><meshStandardMaterial color={color || "#15803d"} /></mesh>
+        <mesh position={[0, 5, 0]}><boxGeometry args={[8, 4, 8]} /><meshStandardMaterial color="#111827" /></mesh>
+      </group>
+    );
+  }
+  if (n.includes('tank')) {
+    return (
+      <group position={[0, 5, 0]}>
+        <mesh><boxGeometry args={[18, 6, 12]} /><meshStandardMaterial color={color || "#4b5563"} /></mesh>
+        <mesh position={[0, 5, 0]}><boxGeometry args={[8, 4, 8]} /><meshStandardMaterial color="#374151" /></mesh>
+        <mesh position={[8, 5, 0]}><cylinderGeometry args={[1, 1, 12]} rotation={[0, 0, Math.PI/2]} /><meshStandardMaterial color="#1f2937" /></mesh>
+      </group>
+    );
+  }
+  if (n.includes('jet') || n.includes('plane') || n.includes('aircraft')) {
+    return (
+      <group position={[0, 10, 0]}>
+        <mesh><cylinderGeometry args={[2, 2, 20]} rotation={[0, 0, Math.PI/2]} /><meshStandardMaterial color={color || "#6b7280"} /></mesh>
+        <mesh position={[-2, 0, 0]}><boxGeometry args={[8, 1, 24]} /><meshStandardMaterial color={color || "#4b5563"} /></mesh>
+        <mesh position={[8, 2, 0]}><boxGeometry args={[4, 6, 1]} /><meshStandardMaterial color={color || "#374151"} /></mesh>
+      </group>
+    );
+  }
+
+  // Default box (crate)
+  return (
+    <mesh position={[0, 5, 0]}>
+      <boxGeometry args={[8, 8, 8]} />
+      <meshStandardMaterial color={color || '#f59e0b'} />
+    </mesh>
+  );
+}
+
 function Element3D({ el }) {
   const X = (el.x || el.x1 || el.cx || 400) - 400;
   const Z = (el.y || el.y1 || el.cy || 275) - 275;
@@ -513,8 +578,11 @@ function Element3D({ el }) {
               <meshStandardMaterial color={el.labelColor || "#ef4444"} />
             </mesh>
             <Billboard position={[0, 37, 0]}>
-              <Text depthTest={false} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
-                {el.icon} {el.label}
+              <Html center position={[0, 10, 0]} style={{ fontSize: '24px', pointerEvents: 'none' }}>
+                {el.icon}
+              </Html>
+              <Text depthTest={false} position={[0, -5, 0]} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+                {el.label}
               </Text>
             </Billboard>
           </group>
@@ -902,16 +970,21 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
                   </group>
                 ) : m.type === 'add_car' ? (
                   <mesh position={[0, 4, 0]}><boxGeometry args={[10, 8, 20]} /><meshStandardMaterial color="#8b5cf6" /></mesh>
+                ) : m.type?.startsWith('add_custom_') ? (
+                  <CustomMarker3D label={m.label} color={m.color} />
                 ) : (
                   <mesh position={[0, 5, 0]}><cylinderGeometry args={[5, 5, 10]} /><meshStandardMaterial color={m.color || '#3b82f6'} opacity={0.8} transparent={true} /></mesh>
                 )}
                 
                 <Billboard position={[0, 40, 0]}>
-                  <Text depthTest={false} position={[0, 0, 0]} fontSize={10} color={m.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
-                    {m.type?.startsWith('add_custom_') ? getCustomIcon(m.label) : m.icon} {m.label}
+                  <Html center position={[0, 10, 0]} style={{ fontSize: '24px', pointerEvents: 'none' }}>
+                    {m.type?.startsWith('add_custom_') ? getCustomIcon(m.label) : m.icon}
+                  </Html>
+                  <Text depthTest={false} position={[0, -5, 0]} fontSize={10} color={m.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+                    {m.label}
                   </Text>
                   {m.placedBy && (
-                    <Text depthTest={false} position={[0, -8, 0]} fontSize={6} color="#60a5fa" outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">
+                    <Text depthTest={false} position={[0, -13, 0]} fontSize={6} color="#60a5fa" outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">
                       by {m.placedBy}
                     </Text>
                   )}
