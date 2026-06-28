@@ -498,6 +498,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
           <span>
             {activeMode === 'view' && '👁 View Mode'}
             {RESOURCE_ICONS[activeMode] && `${RESOURCE_ICONS[activeMode].icon} Click map to place ${RESOURCE_ICONS[activeMode].label}`}
+            {activeMode.startsWith('add_custom_') && `📦 Click map to place ${activeMode.replace('add_custom_', '')}`}
             {activeMode === 'draw_path' && `✏ Route — ${drawingPath ? `${drawingPath.points.length} pts` : 'Click to start'}`}
           </span>
           <div style={{ display: 'flex', gap: '0.4rem' }}>

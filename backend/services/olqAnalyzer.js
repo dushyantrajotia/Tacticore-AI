@@ -124,7 +124,8 @@ function analyzeFullSession(cadetId, cadetName, session) {
   
   // 4. Resource & Problem Metrics
   const res = session.assignedResources || {};
-  const totalAvailable = (res.fireTrucks || 0) + (res.volunteers || 0) + (res.waterPumps || 0) + (res.ambulance || 0) + (res.police || 0);
+  const customTotal = (res.customItems || []).reduce((sum, item) => sum + (item.quantity || 0), 0);
+  const totalAvailable = (res.fireTrucks || 0) + (res.volunteers || 0) + (res.waterPumps || 0) + (res.ambulance || 0) + (res.police || 0) + (res.citizen || 0) + (res.car || 0) + (res.bike || 0) + customTotal;
   const resourcesDeployedPct = totalAvailable > 0 ? Math.min(markers.length / totalAvailable, 1.0) : 0;
   
   const problems = session.problems || [];

@@ -459,6 +459,9 @@ export default function SimulationRoom({ user, onLogout }) {
                   {session.assignedResources?.citizen > 0 && <li>🚶 {session.assignedResources.citizen} Citizens</li>}
                   {session.assignedResources?.car > 0 && <li>🚗 {session.assignedResources.car} Cars</li>}
                   {session.assignedResources?.bike > 0 && <li>🚲 {session.assignedResources.bike} Bikes</li>}
+                  {(session.assignedResources?.customItems || []).map((ci, idx) => (
+                    <li key={idx}>📦 {ci.quantity} {ci.name}</li>
+                  ))}
                 </ul></div>
                 <div><strong>Info:</strong><ul style={{ listStyle: 'none', padding: 0, marginTop: '0.5rem' }}><li>⏱ {session.timeLimit} min</li><li>🎖 Chest No: {user?.chestNo || 'N/A'}</li></ul></div>
               </div>

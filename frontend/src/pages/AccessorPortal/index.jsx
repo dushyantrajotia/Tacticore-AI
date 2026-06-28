@@ -525,11 +525,19 @@ export default function AccessorPortal() {
       <p style={{ color: 'var(--gray-400)', fontSize: '0.85rem' }}>
         {session.problemDescription?.substring(0, 80)}{session.problemDescription?.length > 80 ? '...' : ''}
       </p>
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--gray-500)', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--gray-500)', alignItems: 'center', flexWrap: 'wrap' }}>
         <span>⏱ {session.timeLimit} min</span>
-        <span>🚒 {session.assignedResources?.fireTrucks || 0}</span>
-        <span>👥 {session.assignedResources?.volunteers || 0}</span>
-        <span>💧 {session.assignedResources?.waterPumps || 0}</span>
+        {session.assignedResources?.fireTrucks > 0 && <span>🚒 {session.assignedResources.fireTrucks}</span>}
+        {session.assignedResources?.volunteers > 0 && <span>👥 {session.assignedResources.volunteers}</span>}
+        {session.assignedResources?.waterPumps > 0 && <span>💧 {session.assignedResources.waterPumps}</span>}
+        {session.assignedResources?.ambulance > 0 && <span>🚑 {session.assignedResources.ambulance}</span>}
+        {session.assignedResources?.police > 0 && <span>🚓 {session.assignedResources.police}</span>}
+        {session.assignedResources?.citizen > 0 && <span>🚶 {session.assignedResources.citizen}</span>}
+        {session.assignedResources?.car > 0 && <span>🚗 {session.assignedResources.car}</span>}
+        {session.assignedResources?.bike > 0 && <span>🚲 {session.assignedResources.bike}</span>}
+        {(session.assignedResources?.customItems || []).map((ci, idx) => (
+          <span key={idx}>📦 {ci.name} ({ci.quantity})</span>
+        ))}
         {session.difficulty && (
           <span style={{
             padding: '0.15rem 0.5rem', borderRadius: '1rem', fontSize: '0.65rem', fontWeight: 'bold', textTransform: 'uppercase',
