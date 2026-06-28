@@ -285,6 +285,47 @@ function Element3D({ el }) {
         </group>
       );
     }
+    case 'railway': {
+      const dx = el.x2 - el.x1;
+      const dy = el.y2 - el.y1;
+      const length = Math.max(0.1, Math.hypot(dx, dy));
+      const angle = Math.atan2(dy, dx);
+      const midX = (el.x1 + el.x2) / 2 - 400;
+      const midZ = (el.y1 + el.y2) / 2 - 275;
+      if (isNaN(length)) return null;
+      
+      const numSleepers = Math.floor(length / 5);
+      const sleepers = [];
+      for (let i = 0; i < numSleepers; i++) {
+         sleepers.push(
+            <mesh key={i} position={[-length/2 + (i * 5) + 2.5, 0.2, 0]}>
+               <boxGeometry args={[1.5, 0.2, 10]} />
+               <meshStandardMaterial color="#5c3a21" />
+            </mesh>
+         );
+      }
+
+      return (
+        <group position={[midX, 0.75, midZ]} rotation={[0, -angle, 0]}>
+          {/* Gravel Bed */}
+          <mesh rotation={[-Math.PI/2, 0, 0]}>
+            <planeGeometry args={[length, 12]} />
+            <meshStandardMaterial color="#374151" />
+          </mesh>
+          {/* Wooden Sleepers */}
+          {sleepers}
+          {/* Metal Rails */}
+          <mesh rotation={[-Math.PI/2, 0, 0]} position={[0, 0.4, 3]}>
+            <planeGeometry args={[length, 1.2]} />
+            <meshStandardMaterial color="#94a3b8" />
+          </mesh>
+          <mesh rotation={[-Math.PI/2, 0, 0]} position={[0, 0.4, -3]}>
+            <planeGeometry args={[length, 1.2]} />
+            <meshStandardMaterial color="#94a3b8" />
+          </mesh>
+        </group>
+      );
+    }
     case 'curved_road':
       return (
         <Billboard position={[X, 10, Z]}>
@@ -437,7 +478,7 @@ function Element3D({ el }) {
       );
     case 'bridge':
       return (
-        <group position={[X, 5, Z]}>
+        <group position={[X, 5, Z]} rotation={[0, el.vertical ? Math.PI/2 : 0, 0]}>
           <mesh position={[0, 5, 0]}>
             <boxGeometry args={[40, 5, 20]} />
             <meshStandardMaterial color="#6b7280" />
@@ -537,6 +578,12 @@ function Element3D({ el }) {
           <Text fontSize={el.size || 10} color={el.color || '#ffffff'} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
         </Billboard>
       );
+    case 'distance_label':
+      return (
+        <Billboard position={[X, 10, Z]}>
+          <Text fontSize={12} color="#ef4444" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
+        </Billboard>
+      );
     default:
       return null;
   }
@@ -558,6 +605,24 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [lastPanPos, setLastPanPos] = useState({ x: 0, y: 0 });
+
+  const getCustomIcon = (name) => {
+    if (!name) return '📦';
+    const n = name.toLowerCase();
+    if (n.includes('jet') || n.includes('plane') || n.includes('aircraft') || n.includes('fighter')) return '✈️';
+    if (n.includes('chopper') || n.includes('heli')) return '🚁';
+    if (n.includes('boat') || n.includes('ship') || n.includes('ferry') || n.includes('coast guard')) return '🚤';
+    if (n.includes('train')) return '🚂';
+    if (n.includes('car') || n.includes('jeep')) return '🚙';
+    if (n.includes('truck')) return '🚚';
+    if (n.includes('bus')) return '🚌';
+    if (n.includes('tank')) return '🛡️';
+    if (n.includes('gun') || n.includes('weapon') || n.includes('rifle')) return '🔫';
+    if (n.includes('medic') || n.includes('doctor') || n.includes('medical')) return '⚕️';
+    if (n.includes('dog') || n.includes('k9')) return '🐕';
+    if (n.includes('bomb') || n.includes('explosive')) return '💣';
+    return '📦';
+  };
 
   // Get the scenario template
   const template = SCENARIO_TEMPLATES[scenarioId] || SCENARIO_TEMPLATES['mohi_firing_range'];
@@ -625,7 +690,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
     let resourceInfo = RESOURCE_ICONS[activeMode];
     if (!resourceInfo && activeMode.startsWith('add_custom_')) {
       const customName = activeMode.replace('add_custom_', '');
-      resourceInfo = { icon: '📦', label: customName, color: '#f59e0b' };
+      resourceInfo = { icon: getCustomIcon(customName), label: customName, color: '#f59e0b' };
     }
 
     if (resourceInfo) {
@@ -841,7 +906,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
                 
                 <Billboard position={[0, 25, 0]}>
                   <Text position={[0, 0, 0]} fontSize={10} color={m.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
-                    {m.icon} {m.label}
+                    {m.type?.startsWith('add_custom_') ? getCustomIcon(m.label) : m.icon} {m.label}
                   </Text>
                   {m.placedBy && (
                     <Text position={[0, -8, 0]} fontSize={6} color="#60a5fa" outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">
@@ -898,7 +963,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
             
             {/* Dynamic Elements */}
             {elements.map((el, idx) => {
-              const isInfra = ['road', 'curved_road', 'river', 'track', 'vegetation', 'tree_pine', 'tree_palm', 'house', 'building', 'bridge', 'zone'].includes(el.type);
+              const isInfra = ['road', 'curved_road', 'river', 'track', 'railway', 'vegetation', 'tree_pine', 'tree_palm', 'house', 'building', 'bridge', 'zone', 'distance_label'].includes(el.type);
               if (bgImage && isInfra) return null;
               return renderElement(el, idx);
             })}
@@ -967,7 +1032,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
             {markers.map(marker => (
               <g key={marker.id}>
                 <circle cx={marker.x} cy={marker.y} r="18" fill={marker.color} fillOpacity="0.25" stroke={marker.color} strokeWidth="2" />
-                <text x={marker.x} y={marker.y + 6} textAnchor="middle" fontSize="18">{marker.icon}</text>
+                <text x={marker.x} y={marker.y + 6} textAnchor="middle" fontSize="18">{marker.type?.startsWith('add_custom_') ? getCustomIcon(marker.label) : marker.icon}</text>
                 <text x={marker.x} y={marker.y + 26} textAnchor="middle" fill="#f3f4f6" fontSize="9" fontWeight="bold">{marker.label}</text>
                 {marker.placedBy && (
                   <text x={marker.x} y={marker.y + 36} textAnchor="middle" fill="#60a5fa" fontSize="7">by {marker.placedBy}</text>

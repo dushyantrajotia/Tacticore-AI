@@ -98,12 +98,68 @@ const SCENARIO_TEMPLATES = {
     terrain: '#d2b48c',
     bgImage: '/assets/badli_creek.png',
     elements: [
-      { type: 'label', x: 400, y: 30, text: 'Scale - 10CM = 1KM', color: '#111', size: 14 },
-      { type: 'start_point', x: 700, y: 150, label: 'Petrol Pump' },
-      { type: 'end_point', x: 850, y: 50, label: 'Ratanpur College' },
+      { type: 'label', x: 250, y: 30, text: 'Scale - 10CM = 1KM', color: '#111', size: 14 },
+      
+      // Sea (Left area) & Badli Creek (Middle horizontal)
+      { type: 'zone', x: 0, y: 0, w: 350, h: 550, fill: '#3b82f6', label: 'Sea' },
+      { type: 'zone', x: 350, y: 240, w: 450, h: 90, fill: '#3b82f6', label: 'Badli Creek' },
+
+      // Railway Track (Vertical)
+      { type: 'railway', x1: 420, y1: 0, x2: 420, y2: 550 },
+      // Main Highway (Vertical)
+      { type: 'road', x1: 530, y1: 0, x2: 530, y2: 550, width: 35 },
+      
+      // Connecting Roads
+      { type: 'road', x1: 530, y1: 150, x2: 800, y2: 50, width: 22 }, // To Ratanpur College
+      { type: 'road', x1: 530, y1: 150, x2: 350, y2: 120, width: 16 }, // Dirt path to Rock
+      { type: 'road', x1: 530, y1: 450, x2: 750, y2: 400, width: 18 }, // Path to Badli Village
+
+      // Bridges
+      { type: 'bridge', x: 420, y: 285 }, // Railway bridge
+      { type: 'bridge', x: 530, y: 285 }, // Highway bridge
+
+      // Badli Village Area
+      { type: 'village', x: 750, y: 450, label: 'Badli' },
+      { type: 'house', x: 700, y: 420 },
+      { type: 'house', x: 780, y: 480 },
+      { type: 'house', x: 670, y: 460 },
+
+      // Boats
+      { type: 'boat', x: 280, y: 450, label: 'Coast Guard' },
+      { type: 'boat', x: 700, y: 350, label: 'Ferry' },
+
+      // Compass
+      { type: 'compass', x: 80, y: 80 },
+
+      // Vegetation / Trees
+      { type: 'tree_pine', x: 360, y: 60 },
+      { type: 'tree_pine', x: 400, y: 150 },
+      { type: 'tree_pine', x: 480, y: 100 },
+      { type: 'tree_pine', x: 480, y: 200 },
+      { type: 'tree_pine', x: 600, y: 100 },
+      { type: 'tree_pine', x: 650, y: 60 },
+      { type: 'tree_pine', x: 720, y: 140 },
+      { type: 'tree_pine', x: 480, y: 400 },
+      { type: 'tree_pine', x: 470, y: 500 },
+      
+      { type: 'tree_palm', x: 650, y: 450 },
+      { type: 'tree_palm', x: 700, y: 490 },
+      { type: 'tree_palm', x: 750, y: 520 },
+      { type: 'tree_palm', x: 780, y: 420 },
+
+      // Distance Labels
+      { type: 'distance_label', x: 400, y: 30, text: '↑ Dilnagar 19KM' },
+      { type: 'distance_label', x: 510, y: 30, text: '↑ Dilnagar 10KM' },
+      { type: 'distance_label', x: 740, y: 40, text: 'Ratanpur 10KM ↗' },
+      { type: 'distance_label', x: 400, y: 530, text: '↓ Bagar 18KM' },
+      { type: 'distance_label', x: 510, y: 530, text: '↓ Bagar 10KM' },
+
+      // Original Markers (Aligned to 2D image)
+      { type: 'start_point', x: 580, y: 130, label: 'Petrol Pump' },
+      { type: 'end_point', x: 800, y: 50, label: 'Ratanpur College' },
       { type: 'threat', icon: '💊', x: 300, y: 150, label: 'Drug Exchange (6:45 PM)', labelColor: '#ef4444' },
-      { type: 'threat', icon: '🛤', x: 420, y: 520, label: 'Broken Tracks (Train 6:30 PM)', labelColor: '#ef4444' },
-      { type: 'threat', icon: '🆘', x: 860, y: 480, label: 'Informer at Ferry', labelColor: '#ef4444' }
+      { type: 'threat', icon: '🛤', x: 420, y: 460, label: 'Broken Tracks (Train 6:30 PM)', labelColor: '#ef4444' },
+      { type: 'threat', icon: '🆘', x: 750, y: 380, label: 'Informer at Ferry', labelColor: '#ef4444' }
     ],
     legend: [
       { color: '#ef4444', label: 'Emergency' },

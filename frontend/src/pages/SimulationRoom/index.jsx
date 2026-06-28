@@ -242,6 +242,11 @@ export default function SimulationRoom({ user, onLogout }) {
     socket.emit('simulationStateChange', { roomId: sessionId, isRunning: newState });
   };
 
+  const copyCode = (code) => {
+    navigator.clipboard.writeText(code);
+    alert(`Session code "${code}" copied to clipboard!`);
+  };
+
   // Submit answer (cadet)
   const handleSubmitAnswer = async (submitType = 'manual') => {
     if (!mapRef.current) return;
@@ -377,8 +382,9 @@ export default function SimulationRoom({ user, onLogout }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--gray-100)' }}>
+            <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--gray-100)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {session.title || 'Session'} — <span style={{ color: 'var(--primary)', fontFamily: 'monospace' }}>{session.sessionCode}</span>
+              <button onClick={() => copyCode(session.sessionCode)} style={{ background: 'none', border: 'none', color: 'var(--gray-400)', cursor: 'pointer', padding: 0, fontSize: '1.5rem', marginTop: '0.3rem' }} title="Copy Session Code">📋</button>
             </h1>
             <p style={{ color: 'var(--gray-400)' }}>Waiting for cadets to join. Share the code above.</p>
           </div>
@@ -394,9 +400,10 @@ export default function SimulationRoom({ user, onLogout }) {
         <div className="card">
           <h2 className="card-title" style={{ marginBottom: '1rem' }}>Cadets Joined ({participants.length})</h2>
           {participants.length === 0 ? (
-            <p style={{ color: 'var(--gray-500)', fontStyle: 'italic', textAlign: 'center', padding: '2rem' }}>
-              No cadets have joined yet. Share the session code: <strong style={{ color: 'var(--primary)', fontFamily: 'monospace', fontSize: '1.25rem' }}>{session.sessionCode}</strong>
-            </p>
+            <div style={{ color: 'var(--gray-500)', fontStyle: 'italic', textAlign: 'center', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+              <p>No cadets have joined yet. Share the session code: <strong style={{ color: 'var(--primary)', fontFamily: 'monospace', fontSize: '1.25rem' }}>{session.sessionCode}</strong></p>
+              <button className="btn btn-sm btn-secondary" onClick={() => copyCode(session.sessionCode)}>📋 Copy Code</button>
+            </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
               {participants.map((p, idx) => (

@@ -89,8 +89,8 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
     setForm(f => ({
       ...f,
       scenarioId: templateId,
-      problemDescription: f.problemDescription || t.description,
-      difficulty: t.difficulty || f.difficulty,
+      problemDescription: t.description,
+      difficulty: t.difficulty,
       volunteers: t.defaultResources?.volunteers ?? 0,
       fireTrucks: t.defaultResources?.fireTrucks ?? 0,
       waterPumps: t.defaultResources?.waterPumps ?? 0,

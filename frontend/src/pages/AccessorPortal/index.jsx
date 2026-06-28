@@ -360,8 +360,9 @@ export default function AccessorPortal() {
         <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--gray-500)', background: 'var(--gray-900)', borderRadius: '0.5rem', marginTop: '1rem' }}>
           <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📭</div>
           <p>No submissions yet. Share the code with cadets.</p>
-          <p style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
-            Code: <strong style={{ color: 'var(--primary)', fontFamily: 'monospace', fontSize: '1.1rem' }}>{selectedSession.sessionCode}</strong>
+          <p style={{ fontSize: '0.85rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            Code: <strong style={{ color: 'var(--primary)', fontFamily: 'monospace', fontSize: '1.25rem', letterSpacing: '0.1em', background: 'rgba(59,130,246,0.1)', padding: '0.2rem 0.5rem', borderRadius: '0.3rem' }}>{selectedSession.sessionCode}</strong>
+            <button className="btn btn-sm btn-secondary" onClick={() => copyCode(selectedSession.sessionCode)}>📋 Copy Code</button>
           </p>
         </div>
       );
@@ -572,7 +573,10 @@ export default function AccessorPortal() {
            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div>
                 <h2 style={{ color: 'white', margin: 0, fontSize: '1.5rem' }}>{expandedSubmission.sub.cadetName}'s Submission</h2>
-                <p style={{ color: 'var(--gray-400)', margin: 0, fontSize: '0.9rem' }}>Session: {expandedSubmission.session.sessionCode}</p>
+                <p style={{ color: 'var(--gray-400)', margin: 0, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  Session: <span style={{ fontFamily: 'monospace', color: 'var(--primary)' }}>{expandedSubmission.session.sessionCode}</span>
+                  <button onClick={() => copyCode(expandedSubmission.session.sessionCode)} style={{ background: 'none', border: 'none', color: 'var(--gray-400)', cursor: 'pointer', padding: 0 }} title="Copy Session Code">📋</button>
+                </p>
               </div>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
                 <button className="btn btn-primary" onClick={() => setShowProblemModal(true)}>📋 View Problem Statement</button>
