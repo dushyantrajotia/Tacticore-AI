@@ -101,8 +101,8 @@ const SCENARIO_TEMPLATES = {
       { type: 'label', x: 250, y: 30, text: 'Scale - 10CM = 1KM', color: '#111', size: 14 },
       
       // Sea (Left area) & Badli Creek (Middle horizontal)
-      { type: 'zone', x: 0, y: 0, w: 350, h: 550, fill: '#3b82f6', label: 'Sea' },
-      { type: 'zone', x: 350, y: 240, w: 450, h: 90, fill: '#3b82f6', label: 'Badli Creek' },
+      { type: 'zone', x: 0, y: 0, w: 290, h: 550, fill: '#3b82f6', label: 'Sea' },
+      { type: 'zone', x: 290, y: 240, w: 510, h: 90, fill: '#3b82f6', label: 'Badli Creek' },
 
       // Railway Track (Vertical)
       { type: 'railway', x1: 420, y1: 0, x2: 420, y2: 550 },
@@ -110,13 +110,23 @@ const SCENARIO_TEMPLATES = {
       { type: 'road', x1: 530, y1: 0, x2: 530, y2: 550, width: 35 },
       
       // Connecting Roads
-      { type: 'road', x1: 530, y1: 150, x2: 800, y2: 50, width: 22 }, // To Ratanpur College
-      { type: 'road', x1: 530, y1: 150, x2: 350, y2: 120, width: 16 }, // Dirt path to Rock
-      { type: 'road', x1: 530, y1: 450, x2: 750, y2: 400, width: 18 }, // Path to Badli Village
+      // To Ratanpur College
+      { type: 'road', x1: 530, y1: 160, x2: 800, y2: 50, width: 35 }, 
+      
+      // Path from Ratanpur road down to Ferry dock
+      { type: 'road', x1: 680, y1: 100, x2: 700, y2: 240, width: 16 },
+
+      // Dirt path to Rock (Top Left)
+      { type: 'road', x1: 530, y1: 60, x2: 380, y2: 60, width: 16 }, // Crosses railway horizontally
+      { type: 'road', x1: 380, y1: 60, x2: 290, y2: 150, width: 16 }, // Angles down to the rock (stops at sea edge)
+      
+      // Path to Badli Village (Bottom Right)
+      { type: 'road', x1: 530, y1: 480, x2: 650, y2: 420, width: 18 }, // Curves up right
+      { type: 'road', x1: 650, y1: 420, x2: 750, y2: 450, width: 18 }, // Curves down to Badli
 
       // Bridges
-      { type: 'bridge', x: 420, y: 285 }, // Railway bridge
-      { type: 'bridge', x: 530, y: 285 }, // Highway bridge
+      { type: 'bridge', x: 420, y: 285, vertical: true, length: 110, width: 20 }, // Railway bridge
+      { type: 'bridge', x: 530, y: 285, vertical: true, length: 110, width: 35 }, // Highway bridge
 
       // Badli Village Area
       { type: 'village', x: 750, y: 450, label: 'Badli' },
@@ -125,27 +135,55 @@ const SCENARIO_TEMPLATES = {
       { type: 'house', x: 670, y: 460 },
 
       // Boats
-      { type: 'boat', x: 280, y: 450, label: 'Coast Guard' },
-      { type: 'boat', x: 700, y: 350, label: 'Ferry' },
+      { type: 'boat', x: 270, y: 450, label: 'Coast Guard' },
+      { type: 'boat', x: 700, y: 280, label: 'Ferry' }, // Moved into the Creek
 
       // Compass
       { type: 'compass', x: 80, y: 80 },
 
       // Vegetation / Trees
-      { type: 'tree_pine', x: 360, y: 60 },
-      { type: 'tree_pine', x: 400, y: 150 },
-      { type: 'tree_pine', x: 480, y: 100 },
-      { type: 'tree_pine', x: 480, y: 200 },
-      { type: 'tree_pine', x: 600, y: 100 },
-      { type: 'tree_pine', x: 650, y: 60 },
-      { type: 'tree_pine', x: 720, y: 140 },
-      { type: 'tree_pine', x: 480, y: 400 },
-      { type: 'tree_pine', x: 470, y: 500 },
+      // Five trees aligned perfectly along the left edge of the Dilnagar-Bagar highway
+      { type: 'tree_pine', x: 500, y: 40 },
+      { type: 'tree_pine', x: 500, y: 150 },
+      { type: 'tree_pine', x: 500, y: 230 },
+      { type: 'tree_pine', x: 500, y: 400 },
+      { type: 'tree_pine', x: 500, y: 510 },
+      
+      // Four trees aligned perfectly along the upper edge of the Ratanpur road
+      { type: 'tree_pine', x: 570, y: 125 },
+      { type: 'tree_pine', x: 630, y: 100 },
+      { type: 'tree_pine', x: 690, y: 75 },
+      { type: 'tree_pine', x: 750, y: 50 },
+
+      // Trees along the Ferry dirt path
+      { type: 'tree_pine', x: 650, y: 180 },
+      { type: 'tree_pine', x: 730, y: 160 },
+      { type: 'tree_pine', x: 710, y: 220 },
       
       { type: 'tree_palm', x: 650, y: 450 },
       { type: 'tree_palm', x: 700, y: 490 },
       { type: 'tree_palm', x: 750, y: 520 },
       { type: 'tree_palm', x: 780, y: 420 },
+      { type: 'tree_palm', x: 680, y: 410 },
+      { type: 'tree_palm', x: 730, y: 460 },
+      { type: 'tree_palm', x: 760, y: 490 },
+      { type: 'tree_palm', x: 790, y: 460 },
+      { type: 'tree_palm', x: 710, y: 530 },
+      // Dense Badli Forest Additions
+      { type: 'tree_palm', x: 660, y: 480 },
+      { type: 'tree_palm', x: 670, y: 510 },
+      { type: 'tree_palm', x: 690, y: 450 },
+      { type: 'tree_palm', x: 710, y: 420 },
+      { type: 'tree_palm', x: 740, y: 410 },
+      { type: 'tree_palm', x: 770, y: 440 },
+      { type: 'tree_palm', x: 790, y: 490 },
+      { type: 'tree_palm', x: 800, y: 450 },
+      { type: 'tree_palm', x: 780, y: 530 },
+      { type: 'tree_palm', x: 730, y: 540 },
+      { type: 'tree_palm', x: 680, y: 540 },
+      { type: 'tree_palm', x: 640, y: 420 },
+      { type: 'tree_palm', x: 620, y: 460 },
+
 
       // Distance Labels
       { type: 'distance_label', x: 400, y: 30, text: '↑ Dilnagar 19KM' },
@@ -157,9 +195,9 @@ const SCENARIO_TEMPLATES = {
       // Original Markers (Aligned to 2D image)
       { type: 'start_point', x: 580, y: 130, label: 'Petrol Pump' },
       { type: 'end_point', x: 800, y: 50, label: 'Ratanpur College' },
-      { type: 'threat', icon: '💊', x: 300, y: 150, label: 'Drug Exchange (6:45 PM)', labelColor: '#ef4444' },
+      { type: 'threat', icon: '💊', x: 290, y: 150, label: 'Drug Exchange (6:45 PM)', labelColor: '#ef4444' },
       { type: 'threat', icon: '🛤', x: 420, y: 460, label: 'Broken Tracks (Train 6:30 PM)', labelColor: '#ef4444' },
-      { type: 'threat', icon: '🆘', x: 750, y: 380, label: 'Informer at Ferry', labelColor: '#ef4444' }
+      { type: 'threat', icon: '🆘', x: 720, y: 280, label: 'Informer at Ferry', labelColor: '#ef4444' } // Moved next to Ferry
     ],
     legend: [
       { color: '#ef4444', label: 'Emergency' },

@@ -232,8 +232,8 @@ function Element3D({ el }) {
             <meshStandardMaterial color={el.fill === '#3b82f6' ? '#1e40af' : (el.fill || '#7c6a4a')} opacity={0.6} transparent={true} />
           </mesh>
           {el.label && (
-            <Billboard position={[0, 10, 0]}>
-              <Text fontSize={10} color="#f3f4f6" outlineWidth={0.5} outlineColor="#000000">{el.label}</Text>
+            <Billboard position={[0, 25, 0]}>
+              <Text depthTest={false} fontSize={10} color="#f3f4f6" outlineWidth={0.5} outlineColor="#000000">{el.label}</Text>
             </Billboard>
           )}
         </group>
@@ -329,7 +329,7 @@ function Element3D({ el }) {
     case 'curved_road':
       return (
         <Billboard position={[X, 10, Z]}>
-          <Text fontSize={10} color={el.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000">🛣️ Road</Text>
+          <Text depthTest={false} fontSize={10} color={el.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000">🛣️ Road</Text>
         </Billboard>
       );
     case 'house':
@@ -338,8 +338,8 @@ function Element3D({ el }) {
           <mesh castShadow receiveShadow position={[0, 9, 0]}><boxGeometry args={[25, 18, 25]} /><meshStandardMaterial color="#8b7355" /></mesh>
           <mesh castShadow receiveShadow position={[0, 22, 0]} rotation={[0, Math.PI/4, 0]}><coneGeometry args={[22, 12, 4]} /><meshStandardMaterial color="#5c3a21" flatShading /></mesh>
           {el.label && (
-            <Billboard position={[0, 40, 0]}>
-              <Text fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+            <Billboard position={[0, 55, 0]}>
+              <Text depthTest={false} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
             </Billboard>
           )}
         </group>
@@ -354,8 +354,8 @@ function Element3D({ el }) {
              <mesh castShadow receiveShadow position={[12, 10, -5]} rotation={[0, Math.PI/4, 0]}><coneGeometry args={[12, 8, 4]} /><meshStandardMaterial color="#b91c1c" /></mesh>
            </group>
            {el.label && (
-             <Billboard position={[0, 35, 0]}>
-               <Text fontSize={12} color={el.labelColor || "#fcd34d"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+             <Billboard position={[0, 50, 0]}>
+               <Text depthTest={false} fontSize={12} color={el.labelColor || "#fcd34d"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
              </Billboard>
            )}
         </group>
@@ -366,8 +366,8 @@ function Element3D({ el }) {
         <group position={[X, 0, Z]}>
           <mesh castShadow receiveShadow position={[0, 20, 0]}><boxGeometry args={[35, 40, 35]} /><meshStandardMaterial color={isSch ? "#d97706" : "#64748b"} /></mesh>
           {el.label && (
-            <Billboard position={[0, 50, 0]}>
-              <Text fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+            <Billboard position={[0, 65, 0]}>
+              <Text depthTest={false} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
             </Billboard>
           )}
         </group>
@@ -393,8 +393,8 @@ function Element3D({ el }) {
             <mesh castShadow position={[0, 3, 0]}><boxGeometry args={[30, 6, 12]} /><meshStandardMaterial color="#ef4444" /></mesh>
             <mesh castShadow position={[-4, 8, 0]}><boxGeometry args={[12, 5, 8]} /><meshStandardMaterial color="white" /></mesh>
             {el.label && (
-              <Billboard position={[0, 18, 0]}>
-                <Text fontSize={8} color="white" outlineWidth={0.4} outlineColor="#000000">{el.label}</Text>
+              <Billboard position={[0, 33, 0]}>
+                <Text depthTest={false} fontSize={8} color="white" outlineWidth={0.4} outlineColor="#000000">{el.label}</Text>
               </Billboard>
             )}
           </group>
@@ -403,7 +403,7 @@ function Element3D({ el }) {
     case 'river':
       return el.label ? (
         <Billboard position={[el.labelX ? el.labelX - 400 : X, 10, el.labelY ? el.labelY - 275 : Z]}>
-          <Text fontSize={12} color="#93c5fd" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+          <Text depthTest={false} fontSize={12} color="#93c5fd" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
         </Billboard>
       ) : null;
     case 'start_point':
@@ -470,30 +470,32 @@ function Element3D({ el }) {
         <group position={[X, 0.5, Z]}>
           <mesh position={[0, 0.5, 0]}><cylinderGeometry args={[30, 30, 1]} /><meshStandardMaterial color={color} opacity={0.3} transparent={true} /></mesh>
           {geometry}
-          <Billboard position={[0, 45, 0]}>
-            <Text position={[0, 5, 0]} fontSize={8} color={isStart ? "#86efac" : "#93c5fd"} outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">{title}</Text>
-            <Text position={[0, -5, 0]} fontSize={12} color="white" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+          <Billboard position={[0, 60, 0]}>
+            <Text depthTest={false} position={[0, 5, 0]} fontSize={8} color={isStart ? "#86efac" : "#93c5fd"} outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">{title}</Text>
+            <Text depthTest={false} position={[0, -5, 0]} fontSize={12} color="white" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
           </Billboard>
         </group>
       );
     case 'bridge':
+      const bLen = el.length || 40;
+      const bWid = el.width || 20;
       return (
         <group position={[X, 5, Z]} rotation={[0, el.vertical ? Math.PI/2 : 0, 0]}>
           <mesh position={[0, 5, 0]}>
-            <boxGeometry args={[40, 5, 20]} />
+            <boxGeometry args={[bLen, 5, bWid]} />
             <meshStandardMaterial color="#6b7280" />
           </mesh>
-          <mesh position={[0, 10, 9]}>
-            <boxGeometry args={[40, 4, 2]} />
+          <mesh position={[0, 10, bWid/2 - 1]}>
+            <boxGeometry args={[bLen, 4, 2]} />
             <meshStandardMaterial color="#4b5563" />
           </mesh>
-          <mesh position={[0, 10, -9]}>
-            <boxGeometry args={[40, 4, 2]} />
+          <mesh position={[0, 10, -bWid/2 + 1]}>
+            <boxGeometry args={[bLen, 4, 2]} />
             <meshStandardMaterial color="#4b5563" />
           </mesh>
           {el.label && (
-            <Billboard position={[0, 20, 0]}>
-              <Text fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
+            <Billboard position={[0, 35, 0]}>
+              <Text depthTest={false} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.label}</Text>
             </Billboard>
           )}
         </group>
@@ -510,8 +512,8 @@ function Element3D({ el }) {
               <sphereGeometry args={[6, 16, 16]} />
               <meshStandardMaterial color={el.labelColor || "#ef4444"} />
             </mesh>
-            <Billboard position={[0, 22, 0]}>
-              <Text fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+            <Billboard position={[0, 37, 0]}>
+              <Text depthTest={false} fontSize={10} color={el.labelColor || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
                 {el.icon} {el.label}
               </Text>
             </Billboard>
@@ -530,7 +532,7 @@ function Element3D({ el }) {
              <meshStandardMaterial color="#f3f4f6" />
           </mesh>
           <Billboard position={[0, 15, -25]}>
-            <Text fontSize={16} color="#ef4444" outlineWidth={0.6} outlineColor="#000000" fontWeight="bold">N</Text>
+            <Text depthTest={false} fontSize={16} color="#ef4444" outlineWidth={0.6} outlineColor="#000000" fontWeight="bold">N</Text>
           </Billboard>
         </group>
       );
@@ -538,8 +540,8 @@ function Element3D({ el }) {
       return (
         <group position={[X, 1, Z]}>
           <mesh><cylinderGeometry args={[el.rx || 20, el.rx || 20, 1]} /><meshStandardMaterial color="#ef4444" opacity={0.4} transparent={true} /></mesh>
-          <Billboard position={[0, 15, 0]}>
-            <Text fontSize={10} color="#ff0000" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+          <Billboard position={[0, 30, 0]}>
+            <Text depthTest={false} fontSize={10} color="#ff0000" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
               {el.label}
             </Text>
           </Billboard>
@@ -552,8 +554,8 @@ function Element3D({ el }) {
             <octahedronGeometry args={[8]} />
             <meshStandardMaterial color="#ef4444" />
           </mesh>
-          <Billboard position={[0, 25, 0]}>
-            <Text fontSize={10} color="#ff0000" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+          <Billboard position={[0, 40, 0]}>
+            <Text depthTest={false} fontSize={10} color="#ff0000" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
               {el.icon} {el.label}
             </Text>
           </Billboard>
@@ -565,8 +567,8 @@ function Element3D({ el }) {
           <mesh position={[-4, 5, 0]}><coneGeometry args={[4, 12, 8]} /><meshStandardMaterial color="#ff4500" /></mesh>
           <mesh position={[4, 7, 2]}><coneGeometry args={[5, 15, 8]} /><meshStandardMaterial color="#ffcc00" /></mesh>
           <mesh position={[0, 9, -3]}><coneGeometry args={[6, 18, 8]} /><meshStandardMaterial color="#ff0000" /></mesh>
-          <Billboard position={[0, 25, 0]}>
-            <Text fontSize={10} color="#ff4500" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+          <Billboard position={[0, 40, 0]}>
+            <Text depthTest={false} fontSize={10} color="#ff4500" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
               {el.icon} {el.label}
             </Text>
           </Billboard>
@@ -575,13 +577,13 @@ function Element3D({ el }) {
     case 'label':
       return (
         <Billboard position={[X, 10, Z]}>
-          <Text fontSize={el.size || 10} color={el.color || '#ffffff'} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
+          <Text depthTest={false} fontSize={el.size || 10} color={el.color || '#ffffff'} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
         </Billboard>
       );
     case 'distance_label':
       return (
         <Billboard position={[X, 10, Z]}>
-          <Text fontSize={12} color="#ef4444" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
+          <Text depthTest={false} fontSize={12} color="#ef4444" outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">{el.text}</Text>
         </Billboard>
       );
     default:
@@ -904,12 +906,12 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
                   <mesh position={[0, 5, 0]}><cylinderGeometry args={[5, 5, 10]} /><meshStandardMaterial color={m.color || '#3b82f6'} opacity={0.8} transparent={true} /></mesh>
                 )}
                 
-                <Billboard position={[0, 25, 0]}>
-                  <Text position={[0, 0, 0]} fontSize={10} color={m.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
+                <Billboard position={[0, 40, 0]}>
+                  <Text depthTest={false} position={[0, 0, 0]} fontSize={10} color={m.color || "#ffffff"} outlineWidth={0.5} outlineColor="#000000" fontWeight="bold">
                     {m.type?.startsWith('add_custom_') ? getCustomIcon(m.label) : m.icon} {m.label}
                   </Text>
                   {m.placedBy && (
-                    <Text position={[0, -8, 0]} fontSize={6} color="#60a5fa" outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">
+                    <Text depthTest={false} position={[0, -8, 0]} fontSize={6} color="#60a5fa" outlineWidth={0.4} outlineColor="#000000" fontWeight="bold">
                       by {m.placedBy}
                     </Text>
                   )}
