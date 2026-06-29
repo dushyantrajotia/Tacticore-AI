@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import socket from '../../services/socket';
+import SvgIcon from '../SvgIcon';
 
 export default function ChatPanel({ roomId = '', user }) {
   const [messages, setMessages] = useState([
@@ -44,8 +45,8 @@ export default function ChatPanel({ roomId = '', user }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0.5rem', background: 'transparent' }}>
       <div style={{ borderBottom: '1px solid var(--gray-800)', paddingBottom: '0.25rem', marginBottom: '0.5rem' }}>
-        <h3 style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--gray-500)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>
-          💬 Group Discussion
+        <h3 style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--gray-500)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+          <SvgIcon name="chat" size="0.9rem" /> Group Discussion
         </h3>
       </div>
 
@@ -64,7 +65,7 @@ export default function ChatPanel({ roomId = '', user }) {
                 background: isSystem ? 'var(--gray-700)' : isInstructor ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, var(--primary), #1d4ed8)',
                 color: 'white', fontWeight: 'bold'
               }}>
-                {isSystem ? '📋' : isInstructor ? '👨‍✈' : (msg.chestNo || '?')}
+                {isSystem ? <SvgIcon name="briefing" size="0.85rem" color="white" /> : isInstructor ? <SvgIcon name="instructor" size="0.85rem" color="white" /> : (msg.chestNo || '?')}
               </div>
               {/* Message */}
               <div style={{ flex: 1, textAlign: isMe ? 'right' : 'left' }}>

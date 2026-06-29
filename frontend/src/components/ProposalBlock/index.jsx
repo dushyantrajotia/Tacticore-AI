@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SvgIcon from '../SvgIcon';
 
 export default function ProposalBlock({ proposal, user, onVote, isVotingOpen }) {
   const [vote, setVote] = useState(null);
@@ -44,18 +45,18 @@ export default function ProposalBlock({ proposal, user, onVote, isVotingOpen }) 
       </div>
 
       {/* Content */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--gray-300)', marginBottom: '0.5rem' }}>
-        {proposal.resourcesUsed?.length > 0 && <div>🎒 <strong>Resources:</strong> {proposal.resourcesUsed.join(', ')}</div>}
-        {proposal.estimatedTime && <div>⏱ <strong>Time:</strong> {proposal.estimatedTime}</div>}
-        {proposal.expectedOutcome && <div style={{ gridColumn: 'span 2' }}>🎯 <strong>Outcome:</strong> {proposal.expectedOutcome}</div>}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--gray-300)', marginBottom: '0.5rem', alignItems: 'center' }}>
+        {proposal.resourcesUsed?.length > 0 && <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="🎒" size="0.85rem" /> <strong>Resources:</strong> {proposal.resourcesUsed.join(', ')}</div>}
+        {proposal.estimatedTime && <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="⏱" size="0.85rem" /> <strong>Time:</strong> {proposal.estimatedTime}</div>}
+        {proposal.expectedOutcome && <div style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="🎯" size="0.85rem" /> <strong>Outcome:</strong> {proposal.expectedOutcome}</div>}
       </div>
 
       {/* Vote tallies */}
       {proposal.voteResult && proposal.voteResult.total > 0 && (
-        <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.75rem', marginBottom: '0.5rem' }}>
-          <span style={{ color: 'var(--success)' }}>✓ {proposal.voteResult.accepts}</span>
+        <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.75rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+          <span style={{ color: 'var(--success)', display: 'flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="✓" size="0.75rem" /> {proposal.voteResult.accepts}</span>
           <span style={{ color: 'var(--warning)' }}>± {proposal.voteResult.modifies}</span>
-          <span style={{ color: 'var(--danger)' }}>✗ {proposal.voteResult.rejects}</span>
+          <span style={{ color: 'var(--danger)', display: 'flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="✗" size="0.75rem" /> {proposal.voteResult.rejects}</span>
           <span style={{ color: 'var(--gray-500)' }}>({proposal.voteResult.total} votes)</span>
         </div>
       )}
@@ -65,15 +66,20 @@ export default function ProposalBlock({ proposal, user, onVote, isVotingOpen }) 
         <div style={{ marginTop: '0.5rem', padding: '0.75rem', background: 'var(--gray-900)', borderRadius: '0.4rem' }}>
           <p style={{ fontSize: '0.75rem', color: 'var(--gray-400)', marginBottom: '0.5rem' }}>Cast your vote:</p>
           <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            {[{ v: 'accept', label: '✓ Accept', bg: 'rgba(16,185,129,0.2)', c: 'var(--success)' },
-              { v: 'modify', label: '± Modify', bg: 'rgba(245,158,11,0.2)', c: 'var(--warning)' },
-              { v: 'reject', label: '✗ Reject', bg: 'rgba(239,68,68,0.2)', c: 'var(--danger)' }
+            {[{ v: 'accept', label: 'Accept', icon: '✓', bg: 'rgba(16,185,129,0.2)', c: 'var(--success)' },
+              { v: 'modify', label: 'Modify', icon: '±', bg: 'rgba(245,158,11,0.2)', c: 'var(--warning)' },
+              { v: 'reject', label: 'Reject', icon: '✗', bg: 'rgba(239,68,68,0.2)', c: 'var(--danger)' }
             ].map(opt => (
               <button key={opt.v} onClick={() => setVote(opt.v)} style={{
                 flex: 1, padding: '0.4rem', border: vote === opt.v ? `2px solid ${opt.c}` : '1px solid var(--gray-700)',
                 borderRadius: '0.3rem', background: vote === opt.v ? opt.bg : 'var(--gray-800)',
                 color: opt.c, cursor: 'pointer', fontSize: '0.8rem', fontWeight: '600'
-              }}>{opt.label}</button>
+              }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                  {opt.icon !== '±' ? <SvgIcon name={opt.icon} size="0.8rem" /> : '±'}
+                  {opt.label}
+                </span>
+              </button>
             ))}
           </div>
           <input className="input" placeholder="Reason (optional)" value={reason} onChange={e => setReason(e.target.value)} style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }} />
@@ -82,7 +88,9 @@ export default function ProposalBlock({ proposal, user, onVote, isVotingOpen }) 
       )}
 
       {alreadyVoted && (
-        <p style={{ fontSize: '0.7rem', color: 'var(--gray-500)', fontStyle: 'italic' }}>✓ You have voted on this proposal</p>
+        <p style={{ fontSize: '0.7rem', color: 'var(--gray-500)', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+          <SvgIcon name="✓" size="0.75rem" /> You have voted on this proposal
+        </p>
       )}
     </div>
   );

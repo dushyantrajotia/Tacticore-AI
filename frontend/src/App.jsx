@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import SimulationRoom from './pages/SimulationRoom';
 import AccessorPortal from './pages/AccessorPortal';
 import CadetSessionResults from './pages/CadetSessionResults';
+import SvgIcon from './components/SvgIcon';
 
 // ── Token helpers (sessionStorage only — no localStorage) ──
 const getToken = () => sessionStorage.getItem('token');
@@ -123,7 +124,7 @@ export default function App() {
           boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
           color: theme === 'dark' ? 'var(--warning)' : 'var(--primary)'
         }} title="Toggle Theme">
-          {theme === 'dark' ? '☀' : '🌙'}
+          {theme === 'dark' ? <SvgIcon name="sun" size="1.2rem" /> : <SvgIcon name="moon" size="1.2rem" />}
         </button>
       </div>
     </Router>

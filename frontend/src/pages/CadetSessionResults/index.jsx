@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import SvgIcon from '../../components/SvgIcon';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 const getToken = () => sessionStorage.getItem('token');
@@ -74,8 +75,8 @@ export default function CadetSessionResults({ onLogout }) {
           : 'linear-gradient(135deg, rgba(239,68,68,0.1), rgba(220,38,38,0.05))',
         border: isSubmitted ? '2px solid rgba(16,185,129,0.3)' : '2px solid rgba(239,68,68,0.3)'
       }}>
-        <div style={{ fontSize: '5rem', marginBottom: '1.5rem' }}>
-          {isSubmitted ? '✅' : '⏱'}
+        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+          {isSubmitted ? <SvgIcon name="success" size="5rem" color="var(--success)" /> : <SvgIcon name="timer" size="5rem" color="var(--danger)" />}
         </div>
         <h1 style={{
           fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem',

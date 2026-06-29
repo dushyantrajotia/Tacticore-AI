@@ -1,3 +1,5 @@
+import SvgIcon from '../SvgIcon';
+
 export default function MasterPlan({ masterPlan = [], assignedResources = {} }) {
   // Compute resource usage
   const allResources = masterPlan.flatMap(t => t.resourcesUsed || []);
@@ -16,7 +18,9 @@ export default function MasterPlan({ masterPlan = [], assignedResources = {} }) 
 
   return (
     <div className="card" style={{ borderLeft: '3px solid var(--primary)' }}>
-      <h3 className="card-title" style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>📋 Master Plan</h3>
+      <h3 className="card-title" style={{ fontSize: '1rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        <SvgIcon name="📋" /> Master Plan
+      </h3>
 
       {masterPlan.length === 0 ? (
         <p style={{ color: 'var(--gray-500)', fontSize: '0.85rem', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
@@ -38,7 +42,7 @@ export default function MasterPlan({ masterPlan = [], assignedResources = {} }) 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontWeight: '600', color: 'var(--gray-100)', fontSize: '0.85rem' }}>
                     {task.title}
-                    {task.commanderPriority && <span style={{ color: 'var(--warning)', fontSize: '0.7rem', marginLeft: '0.5rem' }}>⭐ CMD Priority</span>}
+                    {task.commanderPriority && <span style={{ color: 'var(--warning)', fontSize: '0.7rem', marginLeft: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="⭐" size="0.8rem" /> CMD Priority</span>}
                   </span>
                   <span style={{
                     padding: '0.1rem 0.4rem', borderRadius: '0.3rem', fontSize: '0.6rem', fontWeight: 'bold', textTransform: 'uppercase',
@@ -46,10 +50,10 @@ export default function MasterPlan({ masterPlan = [], assignedResources = {} }) 
                     color: task.priority === 'critical' ? '#ef4444' : '#f59e0b'
                   }}>{task.priority}</span>
                 </div>
-                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.7rem', color: 'var(--gray-500)', marginTop: '0.2rem' }}>
-                  <span>👤 {task.proposerName}</span>
-                  {task.estimatedTime && <span>⏱ {task.estimatedTime}</span>}
-                  {task.resourcesUsed?.length > 0 && <span>🎒 {task.resourcesUsed.join(', ')}</span>}
+                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.7rem', color: 'var(--gray-500)', marginTop: '0.2rem', alignItems: 'center' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="👤" size="0.8rem" /> {task.proposerName}</span>
+                  {task.estimatedTime && <span style={{ display: 'flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="⏱" size="0.8rem" /> {task.estimatedTime}</span>}
+                  {task.resourcesUsed?.length > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🎒" size="0.8rem" /> {task.resourcesUsed.join(', ')}</span>}
                 </div>
               </div>
             </div>
@@ -75,9 +79,11 @@ export default function MasterPlan({ masterPlan = [], assignedResources = {} }) 
           {conflicts.map(r => (
             <div key={r} style={{
               padding: '0.4rem 0.6rem', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-              borderRadius: '0.3rem', fontSize: '0.75rem', color: 'var(--danger)', marginBottom: '0.3rem'
+              borderRadius: '0.3rem', fontSize: '0.75rem', color: 'var(--danger)', marginBottom: '0.3rem',
+              display: 'flex', alignItems: 'center', gap: '0.25rem'
             }}>
-              ⚠ Conflict: <strong>{r}</strong> is assigned to multiple tasks simultaneously
+              <SvgIcon name="⚠" size="0.85rem" />
+              <span>Conflict: <strong>{r}</strong> is assigned to multiple tasks simultaneously</span>
             </div>
           ))}
         </div>

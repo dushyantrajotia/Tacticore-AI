@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle, Suspense } from 'react';
 import socket from '../../services/socket';
 import SCENARIO_TEMPLATES from '../../data/scenarioTemplates';
+import SvgIcon from '../SvgIcon';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, Billboard, Text, Line, Html, Sky, Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -37,7 +38,7 @@ function renderElement(el, idx) {
         </g>
       );
     case 'house':
-      return <text key={idx} x={el.x} y={el.y} fontSize="45" textAnchor="middle">🏠</text>;
+      return <SvgIcon key={idx} name="house" size="36" x={el.x - 18} y={el.y - 18} color="#b45309" />;
     case 'fire':
       return (
         <g key={idx}>
@@ -47,7 +48,7 @@ function renderElement(el, idx) {
           <ellipse cx={el.x} cy={el.y} rx="10" ry="14" fill="#ffcc00" opacity="0.8">
             <animate attributeName="rx" values="10;12;10" dur="0.4s" repeatCount="indefinite" />
           </ellipse>
-          <text x={el.x} y={el.y + 3} textAnchor="middle" fontSize="18">🔥</text>
+          <SvgIcon name="fire" size="20" x={el.x - 10} y={el.y - 10} color="#f97316" />
         </g>
       );
     case 'river':
@@ -63,21 +64,21 @@ function renderElement(el, idx) {
           <line x1={el.x1} y1={el.y1} x2={el.x2} y2={el.y2} stroke="#374151" strokeWidth="14" strokeLinecap="butt" />
           <line x1={el.x1} y1={el.y1} x2={el.x2} y2={el.y2} stroke="#9ca3af" strokeWidth="14" strokeDasharray="4,16" />
           <line x1={el.x1} y1={el.y1} x2={el.x2} y2={el.y2} stroke="#64748b" strokeWidth="3" opacity="0.8" />
-          <text x={(el.x1 + el.x2) / 2} y={(el.y1 + el.y2) / 2 - 15} textAnchor="middle" fill="#f3f4f6" fontSize="10" fontWeight="bold" filter="drop-shadow(1px 1px 1px black)">🛤 RAILWAY</text>
+          <text x={(el.x1 + el.x2) / 2} y={(el.y1 + el.y2) / 2 - 15} textAnchor="middle" fill="#f3f4f6" fontSize="10" fontWeight="bold" filter="drop-shadow(1px 1px 1px black)">RAILWAY</text>
         </g>
       );
     case 'building':
       const isSch = el.label?.includes('School');
       return (
         <g key={idx} transform={`translate(${el.x},${el.y})`}>
-          <text fontSize="65" textAnchor="middle">{isSch ? '🏫' : '🏢'}</text>
-          {el.label && <text y="-45" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="14" fontWeight="bold" filter="drop-shadow(1px 1px 1px black)">{el.label}</text>}
+          <SvgIcon name={isSch ? 'school' : 'building'} size="40" x={-20} y={-20} color="var(--primary)" />
+          {el.label && <text y="-25" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="14" fontWeight="bold" filter="drop-shadow(1px 1px 1px black)">{el.label}</text>}
         </g>
       );
     case 'poi':
       return (
         <g key={idx}>
-          <text x={el.x} y={el.y} textAnchor="middle" fontSize="24">{el.icon}</text>
+          <SvgIcon name={el.icon} size="24" x={el.x - 12} y={el.y - 12} color="var(--warning)" />
           {el.label && <text x={el.x} y={el.y + 25} textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="10" fontWeight="bold">{el.label}</text>}
         </g>
       );
@@ -96,8 +97,8 @@ function renderElement(el, idx) {
     case 'bridge':
       return (
         <g key={idx} transform={`translate(${el.x1},${el.y1})`}>
-          <text fontSize="50" textAnchor="middle">🌉</text>
-          {el.label && <text y="-35" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="13" fontWeight="bold">{el.label}</text>}
+          <SvgIcon name="bridge" size="36" x={-18} y={-18} color="#cbd5e1" />
+          {el.label && <text y="-25" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="13" fontWeight="bold">{el.label}</text>}
         </g>
       );
     case 'checkpoint':
@@ -1084,22 +1085,22 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
           transition: 'all 0.2s'
         }}
       >
-        {is3D ? '👁 2D MAP' : '🧊 3D MAP'}
+        {is3D ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name="👁" size="0.95rem" /> 2D MAP</span> : <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name="🧊" size="0.95rem" /> 3D MAP</span>}
       </button>
 
       {/* Zoom Controls (only in 2D) */}
       {!is3D && (
         <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '0.3rem', alignItems: 'center', background: 'rgba(15,23,42,0.8)', padding: '0.4rem', borderRadius: '0.5rem', border: '1px solid var(--gray-700)' }}>
-          <button onClick={() => setZoom(z => Math.min(z * 1.2, 5))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1.1rem', lineHeight: 1 }}>➕</button>
+          <button onClick={() => setZoom(z => Math.min(z * 1.2, 5))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="➕" size="0.9rem" /></button>
           <span style={{ fontSize: '0.65rem', color: 'var(--primary)', fontFamily: 'monospace', fontWeight: '700' }}>{Math.round(zoom * 100)}%</span>
-          <button onClick={() => { setZoom(1); setPan({x: 0, y: 0}); }} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '0.9rem', lineHeight: 1 }}>🔄</button>
-          <button onClick={() => setZoom(z => Math.max(z / 1.2, 0.5))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1.1rem', lineHeight: 1 }}>➖</button>
+          <button onClick={() => { setZoom(1); setPan({x: 0, y: 0}); }} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="🔄" size="0.9rem" /></button>
+          <button onClick={() => setZoom(z => Math.max(z / 1.2, 0.5))} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="➖" size="0.9rem" /></button>
         </div>
       )}
 
       {/* Scenario name badge */}
       <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 10, background: 'rgba(15,23,42,0.85)', padding: '0.35rem 0.75rem', borderRadius: '0.4rem', border: '1px solid var(--gray-700)', fontSize: '0.75rem', color: 'var(--gray-300)' }}>
-        {template.thumbnail} {template.name} {is3D && <span style={{ color: '#3b82f6', fontWeight: 'bold', marginLeft: '0.5rem' }}>3D</span>}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}><SvgIcon name={template.thumbnail} size="1.1rem" /> {template.name} {is3D && <span style={{ color: '#3b82f6', fontWeight: 'bold', marginLeft: '0.5rem' }}>3D</span>}</span>
       </div>
 
       {/* Map Canvas */}
@@ -1309,7 +1310,13 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
             {markers.map(marker => (
               <g key={marker.id}>
                 <circle cx={marker.x} cy={marker.y} r="18" fill={marker.color} fillOpacity="0.25" stroke={marker.color} strokeWidth="2" />
-                <text x={marker.x} y={marker.y + 6} textAnchor="middle" fontSize="18">{marker.type?.startsWith('add_custom_') ? getCustomIcon(marker.label) : marker.icon}</text>
+                <SvgIcon
+                  name={marker.type?.startsWith('add_custom_') ? getCustomIcon(marker.label) : marker.icon}
+                  x={marker.x - 9}
+                  y={marker.y - 9}
+                  size="18"
+                  color={marker.color}
+                />
                 <text x={marker.x} y={marker.y + 26} textAnchor="middle" fill="#f3f4f6" fontSize="9" fontWeight="bold">{marker.label}</text>
                 {marker.placedBy && (
                   <text x={marker.x} y={marker.y + 36} textAnchor="middle" fill="#60a5fa" fontSize="7">by {marker.placedBy}</text>
@@ -1334,10 +1341,10 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
           borderTop: '1px solid var(--gray-700)', fontSize: '0.7rem', color: 'var(--gray-400)'
         }}>
           <span>
-            {activeMode === 'view' && '👁 View Mode'}
-            {RESOURCE_ICONS[activeMode] && `${RESOURCE_ICONS[activeMode].icon} Click map to place ${RESOURCE_ICONS[activeMode].label}`}
-            {activeMode.startsWith('add_custom_') && `📦 Click map to place ${activeMode.replace('add_custom_', '')}`}
-            {activeMode === 'draw_path' && `✏ Route — ${drawingPath ? `${drawingPath.points.length} pts` : 'Click to start'}`}
+            {activeMode === 'view' && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name="👁" /> View Mode</span>}
+            {RESOURCE_ICONS[activeMode] && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name={RESOURCE_ICONS[activeMode].icon} color={RESOURCE_ICONS[activeMode].color} /> Click map to place {RESOURCE_ICONS[activeMode].label}</span>}
+            {activeMode.startsWith('add_custom_') && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name="📦" /> Click map to place {activeMode.replace('add_custom_', '')}</span>}
+            {activeMode === 'draw_path' && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><SvgIcon name="✏" /> Route — {drawingPath ? `${drawingPath.points.length} pts` : 'Click to start'}</span>}
           </span>
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             {activeMode === 'draw_path' && drawingPath && (
@@ -1349,10 +1356,10 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
                   socket.emit('mapUpdate', { roomId, type: 'path', path: newPath, userId: user?._id, chestNo: user?.chestNo });
                   setDrawingPath(null);
                 }
-              }}>✅ Done</button>
+              }} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✓" size="0.95rem" /> Done</button>
             )}
-            <button className="btn btn-sm btn-secondary" onClick={(e) => { e.stopPropagation(); handleUndo(); }}>↩ Undo</button>
-            <button className="btn btn-sm btn-danger" onClick={(e) => { e.stopPropagation(); handleClear(); }}>🗑 Clear</button>
+            <button className="btn btn-sm btn-secondary" onClick={(e) => { e.stopPropagation(); handleUndo(); }} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="↩" size="0.95rem" /> Undo</button>
+            <button className="btn btn-sm btn-danger" onClick={(e) => { e.stopPropagation(); handleClear(); }} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="🗑" size="0.95rem" /> Clear</button>
           </div>
         </div>
       )}

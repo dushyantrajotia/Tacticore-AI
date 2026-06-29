@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SvgIcon from '../SvgIcon';
 
 export default function ResourcePanel({ resources: assignedResources, currentMarkers = [] }) {
   const maxVolunteers = assignedResources?.volunteers || 0;
@@ -48,7 +49,7 @@ export default function ResourcePanel({ resources: assignedResources, currentMar
           <div key={idx}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <label style={{ fontSize: '0.875rem', color: 'var(--gray-300)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.125rem' }}>{resource.icon}</span>
+                <SvgIcon name={resource.icon} size="1.125rem" />
                 {resource.name}
               </label>
               <span style={{ fontSize: '0.875rem', fontWeight: '600', color: resource.current === 0 ? 'var(--danger)' : 'var(--primary)' }}>
