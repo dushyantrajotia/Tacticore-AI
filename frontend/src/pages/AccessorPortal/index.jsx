@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateSessionWizard from '../../components/CreateSessionWizard';
 import SCENARIO_TEMPLATES from '../../data/scenarioTemplates';
 import PlanningMap from '../../components/PlanningMap';
+import SvgIcon from '../../components/SvgIcon';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
@@ -30,7 +31,7 @@ function renderSubmissionElement(el, idx) {
         <g key={idx}>
           <ellipse cx={el.x} cy={el.y} rx="18" ry="22" fill="#ff4500" opacity="0.7" />
           <ellipse cx={el.x} cy={el.y} rx="10" ry="14" fill="#ffcc00" opacity="0.8" />
-          <text x={el.x} y={el.y + 3} textAnchor="middle" fontSize="18">🔥</text>
+          <SvgIcon name="fire" size="20" x={el.x - 10} y={el.y - 10} color="#f97316" />
         </g>
       );
     case 'river':
@@ -45,7 +46,7 @@ function renderSubmissionElement(el, idx) {
         <g key={idx}>
           <line x1={el.x1} y1={el.y1} x2={el.x2} y2={el.y2} stroke="#374151" strokeWidth="12" strokeDasharray="20,8" />
           <line x1={el.x1} y1={el.y1} x2={el.x2} y2={el.y2} stroke="#9ca3af" strokeWidth="3" strokeDasharray="4,24" strokeDashoffset="14" />
-          <text x={(el.x1 + el.x2) / 2 + 200} y={(el.y1 + el.y2) / 2 + 10} fill="#f3f4f6" fontSize="12" fontWeight="bold">🚂 TRAIN TRACK</text>
+          <text x={(el.x1 + el.x2) / 2 + 200} y={(el.y1 + el.y2) / 2 + 10} fill="#f3f4f6" fontSize="12" fontWeight="bold">TRAIN TRACK</text>
         </g>
       );
     case 'danger_zone':
@@ -66,14 +67,14 @@ function renderSubmissionElement(el, idx) {
       const isSch = el.label?.includes('School');
       return (
         <g key={idx} transform={`translate(${el.x},${el.y})`}>
-          <text fontSize="45" textAnchor="middle">{isSch ? '🏫' : '🏢'}</text>
-          {el.label && <text y="-35" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="12" fontWeight="bold">{el.label}</text>}
+          <SvgIcon name={isSch ? 'school' : 'building'} size="36" x={-18} y={-18} color="var(--primary)" />
+          {el.label && <text y="-25" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="12" fontWeight="bold">{el.label}</text>}
         </g>
       );
     case 'poi':
       return (
         <g key={idx}>
-          <text x={el.x} y={el.y} textAnchor="middle" fontSize="24">{el.icon}</text>
+          <SvgIcon name={el.icon} size="24" x={el.x - 12} y={el.y - 12} color="var(--warning)" />
           {el.label && <text x={el.x} y={el.y + 25} textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="10" fontWeight="bold">{el.label}</text>}
         </g>
       );
@@ -103,7 +104,7 @@ function renderSubmissionElement(el, idx) {
       return (
         <g key={idx}>
           <circle cx={el.x} cy={el.y} r="18" fill="rgba(239,68,68,0.2)" stroke="#ef4444" strokeWidth="2" strokeDasharray="4,2" />
-          <text x={el.x} y={el.y + 5} textAnchor="middle" fontSize="18">{el.icon}</text>
+          <SvgIcon name={el.icon} size="18" x={el.x - 9} y={el.y - 9} color="#ef4444" />
           {el.label && <text x={el.x} y={el.y + 28} textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="9" fontWeight="bold">{el.label}</text>}
         </g>
       );
@@ -133,8 +134,8 @@ function renderSubmissionElement(el, idx) {
     case 'bridge':
       return (
         <g key={idx} transform={`translate(${el.x1},${el.y1})`}>
-          <text fontSize="45" textAnchor="middle">🌉</text>
-          {el.label && <text y="-35" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="12" fontWeight="bold">{el.label}</text>}
+          <SvgIcon name="bridge" size="36" x={-18} y={-18} color="#cbd5e1" />
+          {el.label && <text y="-25" textAnchor="middle" fill={el.labelColor || "#ef4444"} fontSize="12" fontWeight="bold">{el.label}</text>}
         </g>
       );
     case 'vegetation':
@@ -157,7 +158,7 @@ function renderSubmissionElement(el, idx) {
       return (
         <g key={idx}>
           <circle cx={el.x} cy={el.y} r="30" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" strokeWidth="2" strokeDasharray="6,3" />
-          <text x={el.x} y={el.y + 5} textAnchor="middle" fontSize="22">{el.icon}</text>
+          <SvgIcon name={el.icon} size="22" x={el.x - 11} y={el.y - 11} color="#f59e0b" />
           {el.label && <text x={el.x} y={el.y + 30} textAnchor="middle" fill="#fbbf24" fontSize="10" fontWeight="bold">{el.label}</text>}
           {el.sublabel && <text x={el.x} y={el.y + 42} textAnchor="middle" fill="#f59e0b" fontSize="8">{el.sublabel}</text>}
         </g>
@@ -358,11 +359,13 @@ export default function AccessorPortal() {
     if (submissions.length === 0) {
       return (
         <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--gray-500)', background: 'var(--gray-900)', borderRadius: '0.5rem', marginTop: '1rem' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📭</div>
+          <div style={{ marginBottom: '0.5rem', display: 'flex', justifyContent: 'center' }}>
+            <SvgIcon name="📭" size="3rem" color="var(--gray-600)" />
+          </div>
           <p>No submissions yet. Share the code with cadets.</p>
           <p style={{ fontSize: '0.85rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
             Code: <strong style={{ color: 'var(--primary)', fontFamily: 'monospace', fontSize: '1.25rem', letterSpacing: '0.1em', background: 'rgba(59,130,246,0.1)', padding: '0.2rem 0.5rem', borderRadius: '0.3rem' }}>{selectedSession.sessionCode}</strong>
-            <button className="btn btn-sm btn-secondary" onClick={() => copyCode(selectedSession.sessionCode)}>📋 Copy Code</button>
+            <button className="btn btn-sm btn-secondary" onClick={() => copyCode(selectedSession.sessionCode)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="📋" size="0.85rem" /> Copy Code</button>
           </p>
         </div>
       );
@@ -376,8 +379,9 @@ export default function AccessorPortal() {
               className={`btn btn-sm ${aiReports.length > 0 ? 'btn-success' : 'btn-primary'}`}
               onClick={aiReports.length > 0 ? () => setShowAIReportModal(true) : handleGenerateAIReport}
               disabled={generatingAI}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
             >
-              {generatingAI ? '⏳ Generating...' : aiReports.length > 0 ? '📊 View Advanced AI Reports' : '🤖 Generate Advanced AI Assessment'}
+              {generatingAI ? <><SvgIcon name="loading" className="animate-spin" /> Generating...</> : aiReports.length > 0 ? <><SvgIcon name="📊" /> View Advanced AI Reports</> : <><SvgIcon name="🤖" /> Generate Advanced AI Assessment</>}
             </button>
           </div>
         </div>
@@ -418,11 +422,11 @@ export default function AccessorPortal() {
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.75rem', fontSize: '0.85rem' }}>
-              <div style={{ padding: '0.4rem 0.8rem', background: 'var(--gray-700)', borderRadius: '0.3rem' }}>
-                📍 <strong>{sub.mapState?.markers?.length || 0}</strong> Resources Placed
+              <div style={{ padding: '0.4rem 0.8rem', background: 'var(--gray-700)', borderRadius: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <SvgIcon name="📍" size="0.85rem" /> <strong>{sub.mapState?.markers?.length || 0}</strong> Resources Placed
               </div>
-              <div style={{ padding: '0.4rem 0.8rem', background: 'var(--gray-700)', borderRadius: '0.3rem' }}>
-                🛤 <strong>{sub.mapState?.paths?.length || 0}</strong> Routes Drawn
+              <div style={{ padding: '0.4rem 0.8rem', background: 'var(--gray-700)', borderRadius: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <SvgIcon name="🛤" size="0.85rem" /> <strong>{sub.mapState?.paths?.length || 0}</strong> Routes Drawn
               </div>
             </div>
 
@@ -470,21 +474,21 @@ export default function AccessorPortal() {
             borderRadius: '0.3rem', fontWeight: 'bold', fontSize: '1rem', letterSpacing: '0.1em', fontFamily: 'monospace'
           }}>{session.sessionCode}</span>
           <button onClick={() => copyCode(session.sessionCode)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }} title="Copy code">📋</button>
+            style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }} title="Copy code"><SvgIcon name="📋" size="0.95rem" /></button>
           <span style={{
             background: session.phase === 'waiting' ? 'rgba(245,158,11,0.15)' : session.phase === 'completed' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
             color: session.phase === 'waiting' ? 'var(--warning)' : session.phase === 'completed' ? 'var(--success)' : 'var(--primary)',
             padding: '0.2rem 0.6rem', borderRadius: '1rem', fontSize: '0.65rem', fontWeight: 'bold', textTransform: 'uppercase'
           }}>{session.phase || 'waiting'}</span>
-          <span style={{ fontSize: '0.8rem', color: 'var(--gray-400)' }}>👥 {session.participants?.length || 0}</span>
+          <span style={{ fontSize: '0.8rem', color: 'var(--gray-400)', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="👥" size="0.8rem" /> {session.participants?.length || 0}</span>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button className="btn btn-sm btn-success" onClick={() => navigate(`/simulation?sessionId=${session._id}`)}>▶ Enter Session</button>
           <button className="btn btn-sm btn-primary" onClick={() => fetchSubmissions(session)}>
             {selectedSession?._id === session._id ? '📤 Hide Submissions' : '📥 Submissions'}
           </button>
-          <button className="btn btn-sm btn-secondary" onClick={() => handleDuplicateSession(session._id)} title="Duplicate session">📋 Duplicate</button>
-          <button className="btn btn-sm btn-danger" onClick={() => handleDeleteSession(session._id)}>🗑</button>
+          <button className="btn btn-sm btn-secondary" onClick={() => handleDuplicateSession(session._id)} title="Duplicate session" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="📋" size="0.8rem" /> Duplicate</button>
+          <button className="btn btn-sm btn-danger" onClick={() => handleDeleteSession(session._id)} style={{ display: 'inline-flex', alignItems: 'center' }}><SvgIcon name="🗑" size="0.85rem" /></button>
         </div>
       </div>
       {session.title && (
@@ -494,17 +498,17 @@ export default function AccessorPortal() {
         {session.problemDescription?.substring(0, 80)}{session.problemDescription?.length > 80 ? '...' : ''}
       </p>
       <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--gray-500)', alignItems: 'center', flexWrap: 'wrap' }}>
-        <span>⏱ {session.timeLimit} min</span>
-        {session.assignedResources?.fireTrucks > 0 && <span>🚒 {session.assignedResources.fireTrucks}</span>}
-        {session.assignedResources?.volunteers > 0 && <span>👥 {session.assignedResources.volunteers}</span>}
-        {session.assignedResources?.waterPumps > 0 && <span>💧 {session.assignedResources.waterPumps}</span>}
-        {session.assignedResources?.ambulance > 0 && <span>🚑 {session.assignedResources.ambulance}</span>}
-        {session.assignedResources?.police > 0 && <span>🚓 {session.assignedResources.police}</span>}
-        {session.assignedResources?.citizen > 0 && <span>🚶 {session.assignedResources.citizen}</span>}
-        {session.assignedResources?.car > 0 && <span>🚗 {session.assignedResources.car}</span>}
-        {session.assignedResources?.bike > 0 && <span>🚲 {session.assignedResources.bike}</span>}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="⏱" size="0.8rem" /> {session.timeLimit} min</span>
+        {session.assignedResources?.fireTrucks > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚒" size="0.8rem" /> {session.assignedResources.fireTrucks}</span>}
+        {session.assignedResources?.volunteers > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="👥" size="0.8rem" /> {session.assignedResources.volunteers}</span>}
+        {session.assignedResources?.waterPumps > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="💧" size="0.8rem" /> {session.assignedResources.waterPumps}</span>}
+        {session.assignedResources?.ambulance > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚑" size="0.8rem" /> {session.assignedResources.ambulance}</span>}
+        {session.assignedResources?.police > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚓" size="0.8rem" /> {session.assignedResources.police}</span>}
+        {session.assignedResources?.citizen > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚶" size="0.8rem" /> {session.assignedResources.citizen}</span>}
+        {session.assignedResources?.car > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚗" size="0.8rem" /> {session.assignedResources.car}</span>}
+        {session.assignedResources?.bike > 0 && <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name="🚲" size="0.8rem" /> {session.assignedResources.bike}</span>}
         {(session.assignedResources?.customItems || []).map((ci, idx) => (
-          <span key={idx}>📦 {ci.name} ({ci.quantity})</span>
+          <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><SvgIcon name={ci.name} size="0.8rem" /> {ci.name} ({ci.quantity})</span>
         ))}
         {session.difficulty && (
           <span style={{
@@ -575,12 +579,12 @@ export default function AccessorPortal() {
                 <h2 style={{ color: 'white', margin: 0, fontSize: '1.5rem' }}>{expandedSubmission.sub.cadetName}'s Submission</h2>
                 <p style={{ color: 'var(--gray-400)', margin: 0, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   Session: <span style={{ fontFamily: 'monospace', color: 'var(--primary)' }}>{expandedSubmission.session.sessionCode}</span>
-                  <button onClick={() => copyCode(expandedSubmission.session.sessionCode)} style={{ background: 'none', border: 'none', color: 'var(--gray-400)', cursor: 'pointer', padding: 0 }} title="Copy Session Code">📋</button>
+                  <button onClick={() => copyCode(expandedSubmission.session.sessionCode)} style={{ background: 'none', border: 'none', color: 'var(--gray-400)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }} title="Copy Session Code"><SvgIcon name="📋" size="0.85rem" /></button>
                 </p>
               </div>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button className="btn btn-primary" onClick={() => setShowProblemModal(true)}>📋 View Problem Statement</button>
-                <button className="btn btn-secondary" onClick={() => setExpandedSubmission(null)}>✕ Close</button>
+                <button className="btn btn-primary" onClick={() => setShowProblemModal(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="📋" size="0.85rem" /> View Problem Statement</button>
+                <button className="btn btn-secondary" onClick={() => setExpandedSubmission(null)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✕" size="0.85rem" /> Close</button>
               </div>
            </div>
            
@@ -612,8 +616,8 @@ export default function AccessorPortal() {
                         <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Top Strengths</p>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
                           {expandedSubmission.sub.olqAnalysis.strengths?.map((s, i) => (
-                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '0.3rem' }}>
-                              <span>✓ {s.name}</span>
+                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✓" size="0.85rem" /> {s.name}</span>
                               <strong>{s.score}</strong>
                             </li>
                           ))}
@@ -624,8 +628,8 @@ export default function AccessorPortal() {
                         <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Areas for Growth</p>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
                           {expandedSubmission.sub.olqAnalysis.improvements?.map((s, i) => (
-                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--warning)', background: 'rgba(245,158,11,0.1)', padding: '0.5rem', borderRadius: '0.3rem' }}>
-                              <span>⚠ {s.name}</span>
+                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--warning)', background: 'rgba(245,158,11,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="⚠" size="0.85rem" /> {s.name}</span>
                               <strong>{s.score}</strong>
                             </li>
                           ))}
@@ -666,7 +670,7 @@ export default function AccessorPortal() {
           background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem'
         }}>
           <div className="card" style={{ maxWidth: '650px', width: '100%', boxShadow: '0 0 40px rgba(59,130,246,0.3)' }}>
-            <h2 className="card-title" style={{ marginBottom: '1rem', color: 'var(--primary)', fontSize: '1.75rem' }}>📋 Problem Statement</h2>
+            <h2 className="card-title" style={{ marginBottom: '1rem', color: 'var(--primary)', fontSize: '1.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><SvgIcon name="📋" /> Problem Statement</h2>
             <div style={{ color: 'var(--gray-300)', lineHeight: '1.6', fontSize: '0.95rem' }}>
               <div style={{ marginBottom: '1.5rem', background: 'var(--gray-800)', padding: '1rem', borderRadius: '0.5rem' }}>
                 <strong>The Situation:</strong>
@@ -700,7 +704,7 @@ export default function AccessorPortal() {
               <h2 style={{ color: 'white', margin: 0, fontSize: '1.8rem' }}>Advanced Behavioral AI Reports</h2>
               <p style={{ color: 'var(--gray-400)', margin: 0 }}>GPE OLQ Analysis Engine v2.0 (Gemini Powered)</p>
             </div>
-            <button className="btn btn-secondary" onClick={() => setShowAIReportModal(false)}>✕ Close</button>
+            <button className="btn btn-secondary" onClick={() => setShowAIReportModal(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✕" size="0.85rem" /> Close</button>
           </div>
 
           <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>

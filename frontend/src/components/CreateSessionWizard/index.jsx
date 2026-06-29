@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SCENARIO_TEMPLATES from '../../data/scenarioTemplates';
+import SvgIcon from '../SvgIcon';
 
 const STEPS = [
   { key: 'scenario', label: 'A. Scenario', icon: '📋' },
@@ -216,7 +217,9 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
                       transition: 'all 0.2s'
                     }}
                   >
-                    <div style={{ fontSize: '1.75rem', marginBottom: '0.4rem' }}>{t.thumbnail}</div>
+                    <div style={{ marginBottom: '0.4rem', display: 'flex', alignItems: 'center' }}>
+                      <SvgIcon name={t.thumbnail} size="2.5rem" />
+                    </div>
                     <div style={{ fontWeight: 'bold', color: 'var(--gray-100)', fontSize: '0.85rem', marginBottom: '0.25rem' }}>{t.name}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--gray-500)', lineHeight: '1.4' }}>{t.description.substring(0, 70)}...</div>
                     <span style={{
@@ -241,8 +244,8 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
               <label style={labelStyle}>Difficulty Level</label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 {['easy', 'medium', 'hard', 'custom'].map(d => (
-                  <button key={d} type="button" style={form.difficulty === d ? chipActive : chipInactive} onClick={() => set('difficulty', d)}>
-                    {d === 'easy' ? '🟢' : d === 'medium' ? '🟡' : d === 'hard' ? '🔴' : '⚙'} {d.charAt(0).toUpperCase() + d.slice(1)}
+                  <button key={d} type="button" style={{ ...form.difficulty === d ? chipActive : chipInactive, display: 'flex', alignItems: 'center', gap: '0.25rem' }} onClick={() => set('difficulty', d)}>
+                    <SvgIcon name={d === 'easy' ? '🟢' : d === 'medium' ? '🟡' : d === 'hard' ? '🔴' : '⚙'} size="0.85rem" color={d === 'easy' ? 'var(--success)' : d === 'medium' ? 'var(--warning)' : d === 'hard' ? 'var(--danger)' : 'currentColor'} /> {d.charAt(0).toUpperCase() + d.slice(1)}
                   </button>
                 ))}
               </div>
@@ -256,17 +259,19 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
             <p style={{ color: 'var(--gray-400)', fontSize: '0.85rem' }}>Define the personnel, equipment, and environmental constraints for this exercise.</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
               {[
-                { key: 'volunteers', label: '👥 Volunteers', icon: '👥' },
-                { key: 'fireTrucks', label: '🚒 Fire Trucks', icon: '🚒' },
-                { key: 'waterPumps', label: '💧 Water Pumps', icon: '💧' },
-                { key: 'ambulance', label: '🚑 Ambulance', icon: '🚑' },
-                { key: 'police', label: '🚓 Police', icon: '🚓' },
-                { key: 'citizen', label: '🚶 Citizen', icon: '🚶' },
-                { key: 'car', label: '🚗 Car', icon: '🚗' },
-                { key: 'bike', label: '🚲 Bike', icon: '🚲' },
+                { key: 'volunteers', label: 'Volunteers', icon: '👥' },
+                { key: 'fireTrucks', label: 'Fire Trucks', icon: '🚒' },
+                { key: 'waterPumps', label: 'Water Pumps', icon: '💧' },
+                { key: 'ambulance', label: 'Ambulance', icon: '🚑' },
+                { key: 'police', label: 'Police', icon: '🚓' },
+                { key: 'citizen', label: 'Citizen', icon: '🚶' },
+                { key: 'car', label: 'Car', icon: '🚗' },
+                { key: 'bike', label: 'Bike', icon: '🚲' },
               ].map(r => (
                 <div key={r.key}>
-                  <label style={labelStyle}>{r.label}</label>
+                  <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <SvgIcon name={r.icon} size="0.9rem" /> {r.label}
+                  </label>
                   <input type="number" className="input" min="0" value={form[r.key]} onChange={e => set(r.key, parseInt(e.target.value) || 0)} />
                 </div>
               ))}
@@ -279,7 +284,7 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
                   <input className="input" placeholder="Name" value={item.name} onChange={e => updateCustomItem(idx, 'name', e.target.value)} style={{ flex: 2 }} />
                   <input type="number" className="input" placeholder="Qty" min="1" value={item.quantity} onChange={e => updateCustomItem(idx, 'quantity', parseInt(e.target.value) || 1)} style={{ flex: 1 }} />
                   <input className="input" placeholder="Capability" value={item.capability} onChange={e => updateCustomItem(idx, 'capability', e.target.value)} style={{ flex: 2 }} />
-                  <button type="button" onClick={() => removeCustomItem(idx)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '1.1rem' }}>✕</button>
+                  <button type="button" onClick={() => removeCustomItem(idx)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="✕" size="0.9rem" /></button>
                 </div>
               ))}
               <button type="button" className="btn btn-sm btn-secondary" onClick={addCustomItem} style={{ marginTop: '0.25rem' }}>+ Add Equipment</button>
@@ -287,11 +292,15 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
             {/* Environment */}
             <div style={gridTwo}>
               <div>
-                <label style={labelStyle}>🏔 Terrain</label>
+                <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <SvgIcon name="🏔" size="0.9rem" /> Terrain
+                </label>
                 <input className="input" placeholder="e.g. Hilly, forested, urban" value={form.terrain} onChange={e => set('terrain', e.target.value)} />
               </div>
               <div>
-                <label style={labelStyle}>🌦 Weather</label>
+                <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <SvgIcon name="🌦" size="0.9rem" /> Weather
+                </label>
                 <input className="input" placeholder="e.g. Monsoon rain, 35°C" value={form.weather} onChange={e => set('weather', e.target.value)} />
               </div>
             </div>
@@ -305,17 +314,17 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
             {form.problems.map((p, idx) => (
               <div key={idx} style={{ padding: '1rem', background: 'var(--gray-800)', borderRadius: '0.5rem', border: p.isPrimary ? '2px solid var(--primary)' : '1px solid var(--gray-700)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: p.isPrimary ? 'var(--primary)' : 'var(--gray-400)' }}>
-                    {p.isPrimary ? '★ PRIMARY PROBLEM' : `Sub-Problem ${idx}`}
+                  <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: p.isPrimary ? 'var(--primary)' : 'var(--gray-400)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    {p.isPrimary ? <><SvgIcon name="★" color="var(--warning)" size="0.9rem" /> PRIMARY PROBLEM</> : `Sub-Problem ${idx}`}
                   </span>
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <select className="input" value={p.priority} onChange={e => updateProblem(idx, 'priority', e.target.value)} style={{ width: 'auto', padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}>
-                      <option value="critical">🔴 Critical</option>
-                      <option value="important">🟡 Important</option>
-                      <option value="secondary">🟢 Secondary</option>
+                      <option value="critical">Critical</option>
+                      <option value="important">Important</option>
+                      <option value="secondary">Secondary</option>
                     </select>
                     {!p.isPrimary && (
-                      <button type="button" onClick={() => removeProblem(idx)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}>✕</button>
+                      <button type="button" onClick={() => removeProblem(idx)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="✕" size="0.9rem" /></button>
                     )}
                   </div>
                 </div>
@@ -340,21 +349,23 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
               <label style={{ ...labelStyle, marginBottom: '0.75rem' }}>Phase Durations (minutes)</label>
               <div style={gridThree}>
                 {[
-                  { key: 'briefing', label: '📋 Briefing' },
-                  { key: 'individualPlanning', label: '🧠 Individual Planning' },
-                  { key: 'groupDiscussion', label: '🗣 Group Discussion' },
-                  { key: 'consolidation', label: '🤝 Consolidation' },
-                  { key: 'presentation', label: '🎤 Presentation' },
-                  { key: 'qa', label: '❓ Q&A' },
+                  { key: 'briefing', label: 'Briefing', icon: '📋' },
+                  { key: 'individualPlanning', label: 'Individual Planning', icon: '🧠' },
+                  { key: 'groupDiscussion', label: 'Group Discussion', icon: '🗣' },
+                  { key: 'consolidation', label: 'Consolidation', icon: '🤝' },
+                  { key: 'presentation', label: 'Presentation', icon: '🎤' },
+                  { key: 'qa', label: 'Q&A', icon: '❓' },
                 ].map(p => (
                   <div key={p.key}>
-                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--gray-400)', marginBottom: '0.25rem' }}>{p.label}</label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--gray-400)', marginBottom: '0.25rem' }}>
+                      <SvgIcon name={p.icon} size="0.85rem" /> {p.label}
+                    </label>
                     <input type="number" className="input" min="1" value={form[p.key]} onChange={e => set(p.key, parseInt(e.target.value) || 1)} />
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(59,130,246,0.08)', borderRadius: '0.4rem', fontSize: '0.8rem', color: 'var(--gray-400)' }}>
-                ⏱ Sum of phase durations: <strong style={{ color: 'var(--primary)' }}>
+              <div style={{ marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(59,130,246,0.08)', borderRadius: '0.4rem', fontSize: '0.8rem', color: 'var(--gray-400)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <SvgIcon name="⏱" size="0.9rem" /> Sum of phase durations: <strong style={{ color: 'var(--primary)', marginLeft: '0.25rem' }}>
                   {form.briefing + form.individualPlanning + form.groupDiscussion + form.consolidation + form.presentation + form.qa} min
                 </strong>
                 {' '}(total session: {form.timeLimit} min)
@@ -381,8 +392,8 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
               <label style={labelStyle}>Access Mode</label>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
                 {[
-                  { mode: 'open', label: '🔓 Open (Code-based)', desc: 'Anyone with the session code can join' },
-                  { mode: 'locked', label: '🔒 Locked (Assigned)', desc: 'Only pre-assigned cadets can join' },
+                  { mode: 'open', label: 'Open (Code-based)', icon: '🔓', desc: 'Anyone with the session code can join' },
+                  { mode: 'locked', label: 'Locked (Assigned)', icon: '🔒', desc: 'Only pre-assigned cadets can join' },
                 ].map(m => (
                   <button
                     key={m.mode}
@@ -399,7 +410,9 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
                       color: 'inherit'
                     }}
                   >
-                    <div style={{ fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.3rem' }}>{m.label}</div>
+                    <div style={{ fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <SvgIcon name={m.icon} size="0.95rem" /> {m.label}
+                    </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)' }}>{m.desc}</div>
                   </button>
                 ))}
@@ -456,7 +469,7 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
             <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.2rem' }}>Create GPE Session</h2>
             <p style={{ fontSize: '0.8rem', color: 'var(--gray-500)' }}>Step {step + 1} of {STEPS.length}</p>
           </div>
-          <button type="button" onClick={onCancel} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', fontSize: '1.5rem', lineHeight: 1 }}>✕</button>
+          <button type="button" onClick={onCancel} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}><SvgIcon name="✕" size="1.25rem" /></button>
         </div>
 
         {/* Step tabs */}
@@ -482,7 +495,7 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
                 gap: '0.35rem'
               }}
             >
-              <span>{s.icon}</span> {s.label}
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><SvgIcon name={s.icon} size="0.95rem" /> {s.label}</span>
             </button>
           ))}
         </div>
@@ -497,6 +510,7 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
 
         {/* Footer buttons */}
         <div style={{ display: 'flex', gap: '0.75rem', borderTop: '1px solid var(--gray-800)', paddingTop: '1rem' }}>
+          <button type="button" className="btn btn-secondary" onClick={onCancel} style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>Cancel</button>
           {step > 0 && (
             <button type="button" className="btn btn-secondary" onClick={() => setStep(s => s - 1)}>← Back</button>
           )}
@@ -504,8 +518,8 @@ export default function CreateSessionWizard({ onCreated, onCancel }) {
           {step < STEPS.length - 1 ? (
             <button type="button" className="btn btn-primary" onClick={() => setStep(s => s + 1)}>Next →</button>
           ) : (
-            <button type="button" className="btn btn-success" onClick={handleSubmit} disabled={creating} style={{ minWidth: '200px' }}>
-              {creating ? '⏳ Creating...' : '🚀 Create & Generate Code'}
+            <button type="button" className="btn btn-success" onClick={handleSubmit} disabled={creating} style={{ minWidth: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              {creating ? <><SvgIcon name="loading" className="animate-spin" /> Creating...</> : <><SvgIcon name="rocket" /> Create & Generate Code</>}
             </button>
           )}
         </div>

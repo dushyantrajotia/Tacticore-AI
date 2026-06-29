@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SvgIcon from '../../components/SvgIcon';
 
 const API = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 const getToken = () => sessionStorage.getItem('token');
@@ -92,7 +93,9 @@ export default function Dashboard({ user }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
         <Link to="/accessor" className="card" style={{ textDecoration: 'none', color: 'inherit', transition: 'all 0.3s ease' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>⚙️</div>
+          <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+            <SvgIcon name="⚙" size="4rem" color="var(--primary)" />
+          </div>
           <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--gray-100)', marginBottom: '0.5rem' }}>Instructor Portal</h3>
           <p style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginBottom: '1rem' }}>Manage sessions and review cadet submissions.</p>
           <button className="btn btn-primary" style={{ width: '100%' }}>Access</button>
@@ -113,7 +116,9 @@ export default function Dashboard({ user }) {
                 background: 'var(--gray-800)', borderRadius: '0.5rem', border: '1px solid var(--gray-700)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ fontSize: '2rem' }}>👨‍🏫</div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <SvgIcon name="👨‍🏫" size="2rem" color="var(--primary)" />
+                  </div>
                   <div>
                     <p style={{ color: 'var(--gray-100)', fontWeight: '600' }}>
                       {s.title || `Session ${s.sessionCode}`}
