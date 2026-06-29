@@ -998,6 +998,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
         label: resourceInfo.label,
         color: resourceInfo.color,
         placedBy: user?.chestNo || user?.name || 'Unknown',
+        timestamp: new Date().toISOString(),
       };
       setMarkers(prev => [...prev, newMarker]);
       socket.emit('mapUpdate', { roomId, type: 'marker', marker: newMarker, userId: user?._id, chestNo: user?.chestNo });
@@ -1351,7 +1352,7 @@ const PlanningMap = forwardRef(function PlanningMap({ roomId, activeMode, user, 
               <button className="btn btn-sm btn-primary" onClick={(e) => {
                 e.stopPropagation();
                 if (drawingPath) {
-                  const newPath = { id: Date.now(), points: drawingPath.points, color: '#111', drawnBy: user?.chestNo || user?.name || 'Unknown' };
+                  const newPath = { id: Date.now(), points: drawingPath.points, color: '#111', drawnBy: user?.chestNo || user?.name || 'Unknown', timestamp: new Date().toISOString() };
                   setPaths(prev => [...prev, newPath]);
                   socket.emit('mapUpdate', { roomId, type: 'path', path: newPath, userId: user?._id, chestNo: user?.chestNo });
                   setDrawingPath(null);

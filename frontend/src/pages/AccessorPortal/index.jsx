@@ -233,6 +233,7 @@ export default function AccessorPortal() {
   const [generatingAI, setGeneratingAI] = useState(false);
   const [showAIReportModal, setShowAIReportModal] = useState(false);
   const [showProblemModal, setShowProblemModal] = useState(false);
+  const [expandedSubmissionTab, setExpandedSubmissionTab] = useState('analysis');
 
   // Load existing sessions on mount
   useEffect(() => {
@@ -599,65 +600,103 @@ export default function AccessorPortal() {
                  </div>
               </div>
               
-              <div style={{ flex: '0 0 calc(25% - 1.5rem)', background: 'var(--gray-800)', borderRadius: '0.5rem', overflowY: 'auto', padding: '1.5rem', border: '1px solid var(--gray-700)' }}>
-                 {expandedSubmission.sub.olqAnalysis ? (
-                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.5rem', borderBottom: '1px solid var(--gray-700)', paddingBottom: '0.5rem' }}>
-                        AI Analysis
-                      </h3>
-                      <div className="card" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05))', border: '1px solid rgba(59,130,246,0.3)', padding: '1rem' }}>
-                        <p style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>Overall Score</p>
-                        <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--gray-100)' }}>
-                          {expandedSubmission.sub.olqAnalysis.overallScore} <span style={{ fontSize: '1.2rem', color: 'var(--gray-500)' }}>/ 10</span>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Top Strengths</p>
-                        <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
-                          {expandedSubmission.sub.olqAnalysis.strengths?.map((s, i) => (
-                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✓" size="0.85rem" /> {s.name}</span>
-                              <strong>{s.score}</strong>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Areas for Growth</p>
-                        <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
-                          {expandedSubmission.sub.olqAnalysis.improvements?.map((s, i) => (
-                            <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--warning)', background: 'rgba(245,158,11,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="⚠" size="0.85rem" /> {s.name}</span>
-                              <strong>{s.score}</strong>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div style={{ marginTop: '1rem' }}>
-                        <h4 style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.75rem' }}>Detailed Breakdown</h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                          {expandedSubmission.sub.olqAnalysis.details?.map((detail, i) => (
-                            <div key={i} style={{ padding: '0.75rem', background: 'var(--gray-900)', borderRadius: '0.5rem', borderLeft: `3px solid ${detail.score >= 8 ? 'var(--success)' : detail.score >= 5 ? 'var(--primary)' : 'var(--danger)'}` }}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                                <span style={{ fontWeight: 'bold', color: 'var(--gray-200)', fontSize: '0.85rem' }}>{detail.name}</span>
-                                <span style={{ fontSize: '1rem', fontWeight: 'bold', color: detail.score >= 8 ? 'var(--success)' : detail.score >= 5 ? 'var(--primary)' : 'var(--danger)' }}>
-                                  {detail.score}
-                                </span>
-                              </div>
-                              <p style={{ color: 'var(--gray-400)', fontSize: '0.75rem', lineHeight: '1.4', margin: 0 }}>{detail.evidence}</p>
+              <div style={{ flex: '0 0 calc(25% - 1.5rem)', background: 'var(--gray-800)', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--gray-700)', overflow: 'hidden' }}>
+                 <div style={{ display: 'flex', borderBottom: '1px solid var(--gray-700)', flexShrink: 0 }}>
+                   <button onClick={() => setExpandedSubmissionTab('analysis')} style={{ flex: 1, padding: '0.75rem', background: expandedSubmissionTab === 'analysis' ? 'var(--gray-700)' : 'transparent', color: expandedSubmissionTab === 'analysis' ? 'white' : 'var(--gray-400)', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>AI Analysis</button>
+                   <button onClick={() => setExpandedSubmissionTab('log')} style={{ flex: 1, padding: '0.75rem', background: expandedSubmissionTab === 'log' ? 'var(--gray-700)' : 'transparent', color: expandedSubmissionTab === 'log' ? 'white' : 'var(--gray-400)', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.85rem' }}>Action Log</button>
+                 </div>
+                 <div style={{ padding: '1.5rem', overflowY: 'auto', flex: 1 }}>
+                   {expandedSubmissionTab === 'analysis' && (
+                     expandedSubmission.sub.olqAnalysis ? (
+                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                          <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.5rem', borderBottom: '1px solid var(--gray-700)', paddingBottom: '0.5rem' }}>
+                            AI Analysis
+                          </h3>
+                          <div className="card" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05))', border: '1px solid rgba(59,130,246,0.3)', padding: '1rem' }}>
+                            <p style={{ color: 'var(--primary)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase' }}>Overall Score</p>
+                            <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--gray-100)' }}>
+                              {expandedSubmission.sub.olqAnalysis.overallScore} <span style={{ fontSize: '1.2rem', color: 'var(--gray-500)' }}>/ 10</span>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                   </div>
-                 ) : (
-                   <div style={{ color: 'var(--gray-500)', textAlign: 'center', padding: '2rem' }}>
-                     <p>No AI analysis available for this submission.</p>
-                   </div>
-                 )}
+                          </div>
+                          
+                          <div>
+                            <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Top Strengths</p>
+                            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
+                              {expandedSubmission.sub.olqAnalysis.strengths?.map((s, i) => (
+                                <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
+                                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="✓" size="0.85rem" /> {s.name}</span>
+                                  <strong>{s.score}</strong>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div>
+                            <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 'bold' }}>Areas for Growth</p>
+                            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: 0, padding: 0, listStyle: 'none', fontSize: '0.85rem' }}>
+                              {expandedSubmission.sub.olqAnalysis.improvements?.map((s, i) => (
+                                <li key={i} style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--warning)', background: 'rgba(245,158,11,0.1)', padding: '0.5rem', borderRadius: '0.3rem', alignItems: 'center' }}>
+                                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><SvgIcon name="⚠" size="0.85rem" /> {s.name}</span>
+                                  <strong>{s.score}</strong>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div style={{ marginTop: '1rem' }}>
+                            <h4 style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.75rem' }}>Detailed Breakdown</h4>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                              {expandedSubmission.sub.olqAnalysis.details?.map((detail, i) => (
+                                <div key={i} style={{ padding: '0.75rem', background: 'var(--gray-900)', borderRadius: '0.5rem', borderLeft: `3px solid ${detail.score >= 8 ? 'var(--success)' : detail.score >= 5 ? 'var(--primary)' : 'var(--danger)'}` }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                                    <span style={{ fontWeight: 'bold', color: 'var(--gray-200)', fontSize: '0.85rem' }}>{detail.name}</span>
+                                    <span style={{ fontSize: '1rem', fontWeight: 'bold', color: detail.score >= 8 ? 'var(--success)' : detail.score >= 5 ? 'var(--primary)' : 'var(--danger)' }}>
+                                      {detail.score}
+                                    </span>
+                                  </div>
+                                  <p style={{ color: 'var(--gray-400)', fontSize: '0.75rem', lineHeight: '1.4', margin: 0 }}>{detail.evidence}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                       </div>
+                     ) : (
+                       <div style={{ color: 'var(--gray-500)', textAlign: 'center', padding: '2rem' }}>
+                         <p>No AI analysis available for this submission.</p>
+                       </div>
+                     )
+                   )}
+                   {expandedSubmissionTab === 'log' && (
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                       <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--gray-100)', marginBottom: '0.5rem', borderBottom: '1px solid var(--gray-700)', paddingBottom: '0.5rem' }}>
+                         Action Log
+                       </h3>
+                       {(() => {
+                         const allActions = [
+                           ...(expandedSubmission.sub.mapState?.markers || []).map(m => ({ ...m, _type: 'marker' })),
+                           ...(expandedSubmission.sub.mapState?.paths || []).map(p => ({ ...p, _type: 'path' }))
+                         ].sort((a, b) => a.id - b.id);
+                         if (allActions.length === 0) return <p style={{ color: 'var(--gray-500)' }}>No actions recorded.</p>;
+                         return allActions.map((action, idx) => (
+                           <div key={idx} style={{ padding: '0.75rem', background: 'var(--gray-900)', borderRadius: '0.5rem', borderLeft: '3px solid var(--primary)' }}>
+                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                               <span style={{ fontWeight: 'bold', color: 'var(--gray-200)', fontSize: '0.85rem' }}>
+                                 {action._type === 'marker' ? `Placed ${action.label || action.type}` : 'Drawn Route'}
+                               </span>
+                               <span style={{ fontSize: '0.75rem', color: 'var(--gray-500)' }}>
+                                 {action.timestamp ? new Date(action.timestamp).toLocaleTimeString() : new Date(action.id).toLocaleTimeString()}
+                               </span>
+                             </div>
+                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                               {action._type === 'marker' && action.icon && <span style={{ fontSize: '1.2rem' }}>{action.icon}</span>}
+                               <span style={{ color: 'var(--gray-400)', fontSize: '0.75rem' }}>By {action.placedBy || action.drawnBy || 'Unknown'}</span>
+                             </div>
+                           </div>
+                         ));
+                       })()}
+                     </div>
+                   )}
+                 </div>
               </div>
            </div>
         </div>
