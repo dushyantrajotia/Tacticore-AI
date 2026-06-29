@@ -679,7 +679,19 @@ export default function AccessorPortal() {
                                  {action._type === 'marker' ? `Placed ${action.label || action.type}` : 'Drawn Route'}
                                </span>
                                <span style={{ fontSize: '0.75rem', color: 'var(--gray-500)' }}>
-                                 {action.timestamp ? new Date(action.timestamp).toLocaleTimeString() : new Date(action.id).toLocaleTimeString()}
+                                 {(() => {
+                                   const timeObj = action.timestamp ? new Date(action.timestamp) : new Date(action.id);
+                                   let timeStr = timeObj.toLocaleTimeString();
+                                   if (expandedSubmission.session.startedAt) {
+                                     const diffSecs = Math.floor((timeObj.getTime() - new Date(expandedSubmission.session.startedAt).getTime()) / 1000);
+                                     if (diffSecs >= 0) {
+                                       const m = Math.floor(diffSecs / 60);
+                                       const s = diffSecs % 60;
+                                       timeStr += ` (at ${m}m ${s}s)`;
+                                     }
+                                   }
+                                   return timeStr;
+                                 })()}
                                </span>
                              </div>
                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

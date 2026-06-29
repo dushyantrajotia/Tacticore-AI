@@ -1,5 +1,7 @@
 # OpSim GPE
 
+**Live Application:** [https://tacticore-ai.vercel.app/](https://tacticore-ai.vercel.app/)
+
 OpSim GPE is an AI-powered web-based tactical simulation platform designed to modernize the traditional SSB Group Planning Exercise (GPE) system.
 
 ## Features
