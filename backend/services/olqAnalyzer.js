@@ -360,13 +360,13 @@ function analyzeSubmission(submission, sessionData) {
   
   // Format for legacy
   return {
-    overallScore: v2Result.ops_score,
+    overallScore: v2Result.ops_score / 10,
     categories: v2Result.categories,
     scores: v2Result.olqRadar,
     strengths: v2Result.strengths.map(s => ({ name: s.olq, score: s.score })),
     improvements: v2Result.development_areas.map(d => ({ name: d.olq, score: d.score })),
     details: OLQ_KEYS.map(k => ({ name: OLQ_NAMES[k], score: v2Result.olqRadar[k], evidence: v2Result.olq_scores[k].evidence })),
-    recommendation: v2Result.ops_score >= 8 ? 'Excellent.' : 'Average.',
+    recommendation: (v2Result.ops_score / 10) >= 8 ? 'Excellent.' : 'Average.',
     metrics: v2Result.metrics,
     analyzedAt: new Date()
   };

@@ -425,12 +425,12 @@ exports.generateAIReport = async (req, res) => {
           cadetId: participant._id,
           cadetName: participant.name,
           chestNo: participant.chestNo,
-          olqRadar: heuristicReport.scores,
-          overallOPS: heuristicReport.overallScore * 10, // scale to 100
-          qualitativeSummary: heuristicReport.recommendation,
+          olqRadar: heuristicReport.olqRadar,
+          overallOPS: heuristicReport.overallOPS,
+          qualitativeSummary: heuristicReport.qualitativeSummary,
           behavioralHighlights: heuristicReport.strengths.map(s => ({
-            description: `Heuristic signal: ${s.name} scored ${s.score}`,
-            olqSignal: s.name
+            description: `Heuristic signal: ${s.olq} scored ${s.score} (${s.behavioral_moment})`,
+            olqSignal: s.olq
           })),
           cautionFlags: heuristicReport.improvements.filter(i => i.score < 4).map(i => ({
             description: `Area for growth: ${i.name}`,
